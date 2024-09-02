@@ -1,4 +1,12 @@
-﻿<form>
+﻿@using ProductsManagementSystem.DTO
+
+@model RegisterDTO
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<form asp-controller="Account" asp-action="Register">
     <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
