@@ -4,7 +4,7 @@ namespace ProductManagementSystem.Controllers
 {
     public class PartiesController : Controller
     {
-        [Route("/")]
+        [Route("parties")]
         public IActionResult Index()
         {
             return View();
