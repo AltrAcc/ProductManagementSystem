@@ -15,35 +15,34 @@ namespace ProductsManagementSystem.Migrations
                 name: "Parties",
                 columns: table => new
                 {
-                    PartyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PartyID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PartyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Partycategory = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactInformation = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PartyCategory = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Parties", x => x.PartyId);
+                    table.PrimaryKey("PK_Parties", x => x.PartyID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Invoices",
                 columns: table => new
                 {
-                    InvoiceId = table.Column<int>(type: "int", nullable: false)
+                    InvoiceID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PartyId = table.Column<int>(type: "int", nullable: false),
+                    PartyID = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PartyId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PartyID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invoices", x => x.InvoiceId);
+                    table.PrimaryKey("PK_Invoices", x => x.InvoiceID);
                     table.ForeignKey(
-                        name: "FK_Invoices_Parties_PartyId1",
-                        column: x => x.PartyId1,
+                        name: "FK_Invoices_Parties_PartyID1",
+                        column: x => x.PartyID1,
                         principalTable: "Parties",
-                        principalColumn: "PartyId",
+                        principalColumn: "PartyID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -51,48 +50,48 @@ namespace ProductsManagementSystem.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductCategory = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PartyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PartyID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.PrimaryKey("PK_Products", x => x.ProductID);
                     table.ForeignKey(
-                        name: "FK_Products_Parties_PartyId",
-                        column: x => x.PartyId,
+                        name: "FK_Products_Parties_PartyID",
+                        column: x => x.PartyID,
                         principalTable: "Parties",
-                        principalColumn: "PartyId");
+                        principalColumn: "PartyID");
                 });
 
             migrationBuilder.CreateTable(
                 name: "InvoiceDetail",
                 columns: table => new
                 {
-                    InvoiceDetailId = table.Column<int>(type: "int", nullable: false)
+                    InvoiceDetailID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    InvoiceId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    InvoiceID = table.Column<int>(type: "int", nullable: false),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ProductID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InvoiceDetail", x => x.InvoiceDetailId);
+                    table.PrimaryKey("PK_InvoiceDetail", x => x.InvoiceDetailID);
                     table.ForeignKey(
-                        name: "FK_InvoiceDetail_Invoices_InvoiceId",
-                        column: x => x.InvoiceId,
+                        name: "FK_InvoiceDetail_Invoices_InvoiceID",
+                        column: x => x.InvoiceID,
                         principalTable: "Invoices",
-                        principalColumn: "InvoiceId",
+                        principalColumn: "InvoiceID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InvoiceDetail_Products_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_InvoiceDetail_Products_ProductID1",
+                        column: x => x.ProductID1,
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "ProductID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -100,48 +99,48 @@ namespace ProductsManagementSystem.Migrations
                 name: "ProductRates",
                 columns: table => new
                 {
-                    ProductRateId = table.Column<int>(type: "int", nullable: false)
+                    ProductRateID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
                     Rate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     EffectiveDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ProductID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductRates", x => x.ProductRateId);
+                    table.PrimaryKey("PK_ProductRates", x => x.ProductRateID);
                     table.ForeignKey(
-                        name: "FK_ProductRates_Products_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_ProductRates_Products_ProductID1",
+                        column: x => x.ProductID1,
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "ProductID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvoiceDetail_InvoiceId",
+                name: "IX_InvoiceDetail_InvoiceID",
                 table: "InvoiceDetail",
-                column: "InvoiceId");
+                column: "InvoiceID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvoiceDetail_ProductId1",
+                name: "IX_InvoiceDetail_ProductID1",
                 table: "InvoiceDetail",
-                column: "ProductId1");
+                column: "ProductID1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoices_PartyId1",
+                name: "IX_Invoices_PartyID1",
                 table: "Invoices",
-                column: "PartyId1");
+                column: "PartyID1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductRates_ProductId1",
+                name: "IX_ProductRates_ProductID1",
                 table: "ProductRates",
-                column: "ProductId1");
+                column: "ProductID1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_PartyId",
+                name: "IX_Products_PartyID",
                 table: "Products",
-                column: "PartyId");
+                column: "PartyID");
         }
 
         /// <inheritdoc />

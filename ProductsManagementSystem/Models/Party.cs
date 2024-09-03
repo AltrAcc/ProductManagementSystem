@@ -10,8 +10,6 @@ namespace ProductManagementSystem.Models
 
         public string PartyCategory { get; set; }
 
-        public string ContactInformation { get; set; }
-
         public ICollection<Product> products { get; set; }
 
         public ICollection<Invoice> invoices { get; set; }

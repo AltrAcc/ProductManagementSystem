@@ -12,7 +12,7 @@ using ProductsManagementSystem.Data;
 namespace ProductsManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240902105336_Initial")]
+    [Migration("20240903045117_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -27,46 +27,46 @@ namespace ProductsManagementSystem.Migrations
 
             modelBuilder.Entity("ProductManagementSystem.Models.Invoice", b =>
                 {
-                    b.Property<int>("InvoiceId")
+                    b.Property<int>("InvoiceID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceID"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PartyId")
+                    b.Property<int>("PartyID")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("PartyId1")
+                    b.Property<Guid>("PartyID1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("InvoiceId");
+                    b.HasKey("InvoiceID");
 
-                    b.HasIndex("PartyId1");
+                    b.HasIndex("PartyID1");
 
                     b.ToTable("Invoices", (string)null);
                 });
 
             modelBuilder.Entity("ProductManagementSystem.Models.InvoiceDetail", b =>
                 {
-                    b.Property<int>("InvoiceDetailId")
+                    b.Property<int>("InvoiceDetailID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceDetailId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceDetailID"));
 
-                    b.Property<int>("InvoiceId")
+                    b.Property<int>("InvoiceID")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ProductId1")
+                    b.Property<Guid>("ProductID1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
@@ -75,22 +75,22 @@ namespace ProductsManagementSystem.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("InvoiceDetailId");
+                    b.HasKey("InvoiceDetailID");
 
-                    b.HasIndex("InvoiceId");
+                    b.HasIndex("InvoiceID");
 
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("ProductID1");
 
                     b.ToTable("InvoiceDetail");
                 });
 
             modelBuilder.Entity("ProductManagementSystem.Models.Party", b =>
                 {
-                    b.Property<Guid>("PartyId")
+                    b.Property<Guid>("PartyID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ContactInformation")
+                    b.Property<string>("PartyCategory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -98,22 +98,18 @@ namespace ProductsManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Partycategory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PartyId");
+                    b.HasKey("PartyID");
 
                     b.ToTable("Parties", (string)null);
                 });
 
             modelBuilder.Entity("ProductManagementSystem.Models.Product", b =>
                 {
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("ProductID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PartyId")
+                    b.Property<Guid?>("PartyID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProductCategory")
@@ -128,36 +124,36 @@ namespace ProductsManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("ProductID");
 
-                    b.HasIndex("PartyId");
+                    b.HasIndex("PartyID");
 
                     b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("ProductManagementSystem.Models.ProductRate", b =>
                 {
-                    b.Property<int>("ProductRateId")
+                    b.Property<int>("ProductRateID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductRateId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductRateID"));
 
                     b.Property<DateTime>("EffectiveDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ProductId1")
+                    b.Property<Guid>("ProductID1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ProductRateId");
+                    b.HasKey("ProductRateID");
 
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("ProductID1");
 
                     b.ToTable("ProductRates", (string)null);
                 });
@@ -166,7 +162,7 @@ namespace ProductsManagementSystem.Migrations
                 {
                     b.HasOne("ProductManagementSystem.Models.Party", "Party")
                         .WithMany("invoices")
-                        .HasForeignKey("PartyId1")
+                        .HasForeignKey("PartyID1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -177,13 +173,13 @@ namespace ProductsManagementSystem.Migrations
                 {
                     b.HasOne("ProductManagementSystem.Models.Invoice", "Invoice")
                         .WithMany("InvoiceDeatilts")
-                        .HasForeignKey("InvoiceId")
+                        .HasForeignKey("InvoiceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ProductManagementSystem.Models.Product", "Product")
                         .WithMany("InvoiceDetails")
-                        .HasForeignKey("ProductId1")
+                        .HasForeignKey("ProductID1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -196,14 +192,14 @@ namespace ProductsManagementSystem.Migrations
                 {
                     b.HasOne("ProductManagementSystem.Models.Party", null)
                         .WithMany("products")
-                        .HasForeignKey("PartyId");
+                        .HasForeignKey("PartyID");
                 });
 
             modelBuilder.Entity("ProductManagementSystem.Models.ProductRate", b =>
                 {
                     b.HasOne("ProductManagementSystem.Models.Product", "Product")
                         .WithMany("ProductRates")
-                        .HasForeignKey("ProductId1")
+                        .HasForeignKey("ProductID1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

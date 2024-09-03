@@ -11,11 +11,10 @@ namespace ProductsManagementSystem.DTO
 
         public string PartyCategory { get; set; }
 
-        public string ContactInformation { get; set; }
 
         public override string ToString()
         {
-            return $"Party ID: {PartyID}, Party Name: {PartyName}, Party Category: {PartyCategory}, Contact Information: {ContactInformation}";
+            return $"Party ID: {PartyID}, Party Name: {PartyName}, Party Category: {PartyCategory}";
         }
 
     }
@@ -29,8 +28,7 @@ namespace ProductsManagementSystem.DTO
             {
                 PartyID = party.PartyID,
                 PartyName = party.PartyName,
-               PartyCategory = party.PartyCategory,
-               ContactInformation = party.ContactInformation
+               PartyCategory = party.PartyCategory
             };
         }
     }

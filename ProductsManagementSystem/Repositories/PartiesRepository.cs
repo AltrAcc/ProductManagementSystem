@@ -18,7 +18,6 @@ namespace ProductsManagementSystem.Repositories
             await _db.SaveChangesAsync();
 
             return party;
-            //throw new NotImplementedException();
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     public class Invoice
     {
-        public int InvoiceId { get; set; }
-        public int PartyId { get; set; }
+        public int InvoiceID { get; set; }
+        public int PartyID { get; set; }
         public DateTime Date { get; set; }
         public decimal TotalAmount { get; set; }
 

@@ -12,16 +12,12 @@ namespace ProductsManagementSystem.DTO
         [Required(ErrorMessage = "Category is must")]
         public string PartyCategory { get; set; }
 
-        [Required(ErrorMessage = "ContactInformation can't be empty")]
-        public string ContactInformation { get; set; }
-
         public Party ToParty()
         {
             return new Party()
             {
                 PartyName = PartyName,
-                PartyCategory = PartyCategory,
-                ContactInformation = ContactInformation
+                PartyCategory = PartyCategory
             };
         }
     }

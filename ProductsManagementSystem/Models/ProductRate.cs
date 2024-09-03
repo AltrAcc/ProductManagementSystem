@@ -2,8 +2,8 @@
 {
     public class ProductRate
     {
-        public int ProductRateId { get; set; }
-        public int ProductId { get; set; }
+        public int ProductRateID { get; set; }
+        public int ProductID { get; set; }
         public decimal Rate { get; set; }
         public DateTime EffectiveDate { get; set; }
 
