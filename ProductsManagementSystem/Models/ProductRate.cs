@@ -10,7 +10,7 @@ namespace ProductManagementSystem.Models
 
 
         [Required(ErrorMessage = "Product Id is Required")]
-        public int ProductID { get; set; }
+        public Guid ProductID { get; set; }
 
 
         [Required(ErrorMessage = "Add Product rate")]
@@ -25,7 +25,7 @@ namespace ProductManagementSystem.Models
         public DateTime EffectiveDate { get; set; } = DateTime.Now;
 
 
-        //[ForeignKey("ProductID")]
+        [ForeignKey("ProductID")]
         public Product? Product { get; set; }
     }
 

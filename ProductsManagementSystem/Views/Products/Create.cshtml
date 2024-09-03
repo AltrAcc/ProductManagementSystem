@@ -32,6 +32,16 @@
             </div>
         </div>
 
+        @* Product Rate*@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="ProductPrice" class="form-label pt">Product Price</label>
+            </div>
+            <div class="flex-1">
+                <input asp-for="ProductPrice" class="form-input" />
+                <span asp-validation-for="ProductPrice" class="text-red"></span>
+            </div>
+        </div>
 
         @*Submit*@
         <div class="form-field flex">

@@ -9,6 +9,9 @@ namespace ProductsManagementSystem.DTO
         [Required(ErrorMessage = "Add Product Name")]
         public string? ProductName { get; set; }
 
+        [Required(ErrorMessage = "Add Product Price")]
+        public Decimal? ProductPrice { get; set; }
+
         [Required(ErrorMessage = "Add Description of product")]
         [Length(10, 50, ErrorMessage = "Description length id allowed between 10 to 50")]
         public string? ProductDescription { get; set; }
@@ -18,7 +21,8 @@ namespace ProductsManagementSystem.DTO
             return new Product()
             {
                 ProductName = ProductName,
-                ProductDescription = ProductDescription
+                ProductDescription = ProductDescription,
+                ProductPrice = ProductPrice
             };
         }
     }

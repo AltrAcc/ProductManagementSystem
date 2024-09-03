@@ -31,7 +31,19 @@ namespace ProductsManagementSystem.Services
             _db.Add(product);
             _db.SaveChanges();
 
-            return product.ToProductResponse();
+            var productRate = new ProductRate
+            {
+                ProductID = product.ProductID,
+                Rate = (decimal)ProductAddRequest.ProductPrice, 
+                EffectiveDate = DateTime.Now 
+            };
+
+            _db.ProductRates.Add(productRate);
+            _db.SaveChanges();
+
+            //return product.ToProdcutResponse(productRate);
+
+            return product.ToProductResponse(productRate);
         }
 
         public List<ProductAddResponse> GetAllProduct()
@@ -40,9 +52,11 @@ namespace ProductsManagementSystem.Services
                 .Select(temp => ConvertProductToProductResponse(temp)).ToList();
         }
 
+
+
         private ProductAddResponse ConvertProductToProductResponse(Product product)
         {
-            ProductAddResponse productResponse = product.ToProductResponse();
+            ProductAddResponse productResponse = product.ToProductResponse(null);
             return productResponse;
         }
     }

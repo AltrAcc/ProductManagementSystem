@@ -9,6 +9,8 @@ namespace ProductsManagementSystem.DTO
 
         public string? ProductName { get; set; }
 
+        public Decimal? ProductPrice { get; set; }
+
         public string? ProductDescription { get; set; }
 
 
@@ -21,14 +23,15 @@ namespace ProductsManagementSystem.DTO
 
     public static class ProductExtensions
     {
-        public static ProductAddResponse ToProductResponse(this Product product)
+        public static ProductAddResponse ToProductResponse(this Product product, ProductRate? productRate)
         {
             //product => convert => ProductAddResponse
             return new ProductAddResponse()
             {
                 ProductID = product.ProductID,
                 ProductName = product.ProductName,
-                ProductDescription = product.ProductDescription
+                ProductDescription = product.ProductDescription,
+                ProductPrice = productRate?.Rate
             };
         }
     }
