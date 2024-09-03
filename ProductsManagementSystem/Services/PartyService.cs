@@ -3,6 +3,8 @@ using ProductsManagementSystem.Data;
 using ProductsManagementSystem.DTO;
 using ProductsManagementSystem.RepositoryContracts;
 using ProductsManagementSystem.ServiceContracts;
+using System;
+using System.IO;
 
 namespace ProductsManagementSystem.Services
 {
@@ -14,29 +16,6 @@ namespace ProductsManagementSystem.Services
         {
             _db = db;
         }
-
-
-        //private readonly IPartiesRepository _partiesRepositories;
-
-        //public PartyService(IPartiesRepository partiesRepositories)
-        //{
-        //    _partiesRepositories = partiesRepositories;
-        //}
-
-        //public async Task<PartyResponse> AddParty(PartyRequest partyRequest)
-        //{
-        //    if(partyRequest == null) throw new ArgumentNullException(nameof(partyRequest));
-
-        //    Party party = partyRequest.ToParty();
-
-        //    party.PartyID = Guid.NewGuid();
-
-        //    await _partiesRepositories.AddParty(party);
-
-        //    return party.ToPartyResponse();
-
-        //    //throw new NotImplementedException();
-        //}
 
         public PartyResponse AddParty(PartyRequest? partyRequest)
         {
@@ -56,6 +35,18 @@ namespace ProductsManagementSystem.Services
             _db.SaveChanges();
 
             return party.ToPartyResponse();
+        }
+
+        public List<PartyResponse> GetAllParties()
+        {
+            return _db.Parties.ToList()
+                .Select(temp => ConvertPartyToPartyResponse(temp)).ToList();
+        }
+
+        private PartyResponse ConvertPartyToPartyResponse(Party party)
+        {
+            PartyResponse partyResponse = party.ToPartyResponse();
+            return partyResponse;
         }
     }
 }

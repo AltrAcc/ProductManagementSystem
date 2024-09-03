@@ -6,10 +6,10 @@ namespace ProductsManagementSystem.DTO
 {
     public class PartyRequest
     {
-        [Required(ErrorMessage = "Party Name can't be empty")]
+        [Required(ErrorMessage = "Add Party Name")]
         public string PartyName { get; set; }
 
-        [Required(ErrorMessage = "Category is must")]
+        [Required(ErrorMessage = "Select Category")]
         public string PartyCategory { get; set; }
 
         public Party ToParty()

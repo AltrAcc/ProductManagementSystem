@@ -5,7 +5,5 @@
         public string PartyName { get; set; }
 
         public string PartyCategory { get; set; }
-
-        public string ContactInformation { get; set; }
     }
 }

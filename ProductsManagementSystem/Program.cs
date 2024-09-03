@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProductsManagementSystem.Data;
+using ProductsManagementSystem.ServiceContracts;
+using ProductsManagementSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// DI Service
+builder.Services.AddScoped<IPartyService, PartyService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
