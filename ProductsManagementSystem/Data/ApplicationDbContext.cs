@@ -29,7 +29,7 @@ namespace ProductsManagementSystem.Data
             //modelBuilder.Entity<ProductRate>()
             //    .HasKey(pr => new { pr.ProductId, pr.EffectiveDate });
 
-            //// Add any additional configuration
+            
         }
     }
 }

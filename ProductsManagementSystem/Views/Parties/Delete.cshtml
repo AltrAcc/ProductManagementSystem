@@ -1,0 +1,71 @@
+﻿@model PartyResponse
+
+@{
+    ViewBag.Title = "Delete Party";
+}
+
+<a asp-controller="Parties" asp-action="Index">Back to Parties List</a>
+
+<h2>Delete Person</h2>
+<h3>Are you sure to delete this person?</h3>
+
+<div class="center-box">
+    <form asp-controller="Parties" asp-action="Delete" method="post">
+
+        <input type="hidden" asp-for="PartyID" />
+
+        @*PartyName*@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="PartyName" class="form-label pt">Party Name</label>
+            </div>
+            <div class="flex-1">
+                <input asp-for="PartyName" class="form-input" />
+                <span asp-validation-for="PartyName" class="text-red"></span>
+            </div>
+        </div>
+
+        @*Category*@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label class="form-label">Category</label>
+            </div>
+            <div class="flex-1">
+                @{
+                    string[] categories = (string[])Enum.GetNames(typeof(Categories));
+                }
+                @foreach (string category in categories)
+                {
+                    <input type="radio" asp-for="PartyCategory" value="@category" />
+                    <label for="@category">@category</label>
+                }
+                <span asp-validation-for="PartyCategory" class="text-red"></span>
+            </div>
+        </div>
+
+
+        @*Submit*@
+        <div class="form-field flex">
+            <div class="w-25">
+            </div>
+            <div class="flex-1">
+                <button class="button button-green-back">Delete</button>
+
+                <div asp-validation-summary="All" class="text-red"></div>
+
+                @if (ViewBag.Errors != null)
+                {
+                    <div class="text-red ml">
+                        <ul>
+                            @foreach (string error in ViewBag.Errors)
+                            {
+                                <li class="ml">@error</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </form>
+</div>

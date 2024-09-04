@@ -17,6 +17,16 @@ namespace ProductsManagementSystem.DTO
             return $"Party ID: {PartyID}, Party Name: {PartyName}, Party Category: {PartyCategory}";
         }
 
+        public PartyUpdateRequest ToPartyUpdateRequest()
+        {
+            return new PartyUpdateRequest()
+            {
+                PartyID = PartyID,
+                PartyName = PartyName,
+                PartyCategory = PartyCategory
+            };
+        }
+
     }
 
     public static class PartyExtensions
