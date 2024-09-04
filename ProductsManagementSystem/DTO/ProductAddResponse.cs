@@ -11,19 +11,13 @@ namespace ProductsManagementSystem.DTO
 
         public Decimal? ProductPrice { get; set; }
 
-        public string? ProductDescription { get; set; }
-
-
-        public override string ToString()
-        {
-            return $"Party ID: {ProductID}, Party Name: {ProductName}, Party Category: {ProductDescription}";
-        }
+        public string? ProductDescription { get; set; } 
 
     }
 
     public static class ProductExtensions
     {
-        public static ProductAddResponse ToProductResponse(this Product product, ProductRate? productRate)
+        public static ProductAddResponse ToProductResponse(this Product product, ProductRate productRate)
         {
             //product => convert => ProductAddResponse
             return new ProductAddResponse()
@@ -31,7 +25,7 @@ namespace ProductsManagementSystem.DTO
                 ProductID = product.ProductID,
                 ProductName = product.ProductName,
                 ProductDescription = product.ProductDescription,
-                ProductPrice = productRate?.Rate
+                ProductPrice = productRate.Rate
             };
         }
     }

@@ -41,20 +41,20 @@ namespace ProductsManagementSystem.Services
             return productRate;
         }
 
-        public ProductRateResponse ChangeProductRate(ProductRateRequest productRateRequestDTO)
+        public ProductRateResponse ChangeProductRate(ProductRateRequest productRateRequest)
         {
-            if (productRateRequestDTO == null)
+            if (productRateRequest == null)
             {
-                throw new AggregateException(nameof(productRateRequestDTO));
+                throw new AggregateException(nameof(productRateRequest));
             }
 
             var productRate = new ProductRate()
             {
-                ProductID = productRateRequestDTO.ProductId,
-                Rate = productRateRequestDTO.Rate,
-                EffectiveDate = productRateRequestDTO.EffectiveDate,
+                ProductID = productRateRequest.ProductId,
+                Rate = productRateRequest.Rate,
+                EffectiveDate = productRateRequest.EffectiveDate,
             };
-            var product = _db.Products.Find(productRateRequestDTO.ProductId);
+            var product = _db.Products.Find(productRateRequest.ProductId);
             _db.ProductRates.Add(productRate);
 
             _db.SaveChanges();

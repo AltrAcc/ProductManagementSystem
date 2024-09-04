@@ -24,11 +24,11 @@ public static class ProductRateExtension
     {
         return new ProductRateResponse()
         {
+            ProductName = product.ProductName,
             productId = productRate.ProductID,
             ProductRateId = productRate.ProductID,
             Rate = productRate.Rate,
-            EffectiveDate = productRate.EffectiveDate,
-            ProductName = product.ProductName,
+            EffectiveDate = productRate.EffectiveDate
         };
     }
 }

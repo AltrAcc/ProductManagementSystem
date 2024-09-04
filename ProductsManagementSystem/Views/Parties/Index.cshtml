@@ -69,6 +69,8 @@
 
                         <a asp-controller="Parties" asp-action="Details" asp-route-partyID="@party.PartyID">Details</a>
                         @* /party/ḍetails/1 *@
+
+                        <a asp-action="create" asp-controller="Invoices" asp-route-partyId="@party.PartyID">Create Invoice</a>
                     </td>
                 </tr>
             }

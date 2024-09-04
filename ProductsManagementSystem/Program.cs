@@ -18,6 +18,7 @@ builder.Services.AddScoped<IPartyService, PartyService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRateService, ProductRateService>();
 builder.Services.AddScoped<IProductAssignmentService, ProductAssignmentService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 
 var app = builder.Build();
 

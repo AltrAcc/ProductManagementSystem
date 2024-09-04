@@ -1,0 +1,64 @@
+﻿@model InvoiceView
+
+<div class="center-box">
+    <form id="addProductForm" method="post">
+        <input type="hidden" value="@Model.PartyID" id="partyId" />
+
+        @* Party *@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label for="Party" class="form-label pt">Party</label>
+            </div>
+            <div class="flex-1">
+                <input class="form-input" readonly value="@Model.PartyName">
+                <span class="text-red"></span>
+            </div>
+        </div>
+
+        @* Products with Quantity Inputs *@
+        @foreach (var product in ViewBag.products)
+        {
+            <div class="form-field flex">
+                <div class="w-25">
+                    <label class="form-label pt">@product.ProductName</label>
+                </div>
+                <div class="flex-1">
+                    <input type="hidden" name="Products[@product.ProductId].ProductId" value="@product.ProductId" />
+                    <input type="number" class="form-input" name="Products[@product.ProductId].Quantity" placeholder="Quantity" min="0">
+                    <span class="text-red"></span>
+                </div>
+            </div>
+        }
+
+        @* Submit *@
+        <div class="form-field flex">
+            <div class="w-25"></div>
+            <div class="flex-1">
+                <button type="submit" class="button button-green-back">Add</button>
+                <div asp-validation-summary="All" class="text-red"></div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
