@@ -5,7 +5,7 @@ namespace ProductsManagementSystem.DTO
 {
     public class PartyResponse
     {
-        public Guid PartyID { get; set; }
+        public int PartyID { get; set; }
 
         public string PartyName { get; set; }
 

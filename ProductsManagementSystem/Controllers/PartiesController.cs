@@ -10,10 +10,13 @@ namespace ProductManagementSystem.Controllers
     public class PartiesController : Controller
     {
         private readonly IPartyService _partyService;
-
-        public PartiesController(IPartyService partyService)
+        private readonly IProductAssignmentService _partyAssignmentService;
+        private readonly IProductService _productService;
+        public PartiesController(IPartyService partyService, IProductAssignmentService partyAssignmentService, IProductService productService)
         {
             _partyService = partyService;
+            _partyAssignmentService = partyAssignmentService;
+            _productService = productService;
         }
 
 
@@ -69,7 +72,7 @@ namespace ProductManagementSystem.Controllers
 
         [HttpGet]
         [Route("[action]/{partyID}")]
-        public IActionResult Edit(Guid partyID)
+        public IActionResult Edit(int partyID)
         {
             PartyResponse? partyResponse = _partyService.GetPartyById(partyID);
 
@@ -110,7 +113,7 @@ namespace ProductManagementSystem.Controllers
 
         [HttpGet]
         [Route("[action]/{partyID}")]
-        public IActionResult Delete(Guid? partyID)
+        public IActionResult Delete(int? partyID)
         {
             PartyResponse? partyResponse = _partyService.GetPartyById(partyID);
             if (partyResponse == null)
@@ -130,6 +133,24 @@ namespace ProductManagementSystem.Controllers
 
             _partyService.DeleteParty(partyUpdateRequest.PartyID);
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Details(int partyId)
+        {
+            //if (!partyId)
+            //{
+            //    return RedirectToAction("Index", "Party");
+            //}
+
+            PartyResponse partyResponseDTO = _partyService.GetPartyById(partyId);
+            IEnumerable<ProductAddResponse> productRequestDTO = _partyAssignmentService.GetAssignProductByPartyID(partyId);
+
+            ProductAssignment productAssignDTO = new ProductAssignment()
+            {
+                PartyResponse = partyResponseDTO,
+                ProductAddResponse = productRequestDTO,
+            };
+            return View(productAssignDTO);
         }
 
     }

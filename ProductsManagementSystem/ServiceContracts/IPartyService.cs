@@ -15,11 +15,14 @@ namespace ProductsManagementSystem.ServiceContracts
         PartyResponse AddParty(PartyRequest? request);
         List<PartyResponse> GetAllParties();
 
-        PartyResponse GetPartyById(Guid? PartyID);
+        PartyResponse GetPartyById(int? PartyID);
+
+        public PartyResponse? GetPartyByName(string PartyName);
 
         PartyResponse UpdateParty(PartyUpdateRequest? partyUpdateRequest);
 
-        bool DeleteParty(Guid? partyID);
+        bool DeleteParty(int? partyID);
+
         List<PartyResponse> GetFilteredParties(string searchBy, string? searchString);
         List<PartyResponse> GetSortedParties(List<PartyResponse> parties, string sortBy, SortOrderOptions sortOrder);
     }

@@ -1,15 +1,25 @@
-﻿namespace ProductManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace ProductManagementSystem.Models
 {
     public class Invoice
     {
-        public int InvoiceID { get; set; }
-        public int PartyID { get; set; }
-        public DateTime Date { get; set; }
-        public decimal TotalAmount { get; set; }
+        [Key]
+        public int InvoiceId { get; set; }
 
+
+        [Required(ErrorMessage = "Party is Required")]
+        public int PartyId { get; set; }
+
+        [ForeignKey("PartyId")]
         public Party Party { get; set; }
 
-        public ICollection<InvoiceDetail> InvoiceDeatilts { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime InvoiceDate { get; set; } = DateTime.Now;
+
+        public ICollection<InvoiceDetails>? InvoiceDetails { get; set; }
     }
 
 }

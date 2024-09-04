@@ -21,8 +21,7 @@ namespace ProductsManagementSystem.DTO
             return new Product()
             {
                 ProductName = ProductName,
-                ProductDescription = ProductDescription,
-                ProductPrice = ProductPrice
+                ProductDescription = ProductDescription
             };
         }
     }

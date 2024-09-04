@@ -1,0 +1,40 @@
+﻿@model ProductAssignmentRequest
+
+@{
+    ViewBag.Title = "Assign Products";
+}
+
+<h1> Product Assignment </h1>
+
+<div class="center-box">
+
+    <form asp-action="ProductAssign" asp-controller="ProductAssignment" method="post" class="box">
+        <div class="form-field">
+            <input type="hidden" value="@Model.PartyID" asp-for="PartyID" />
+
+            <label asp-for="SelectedProductId" class="form-label">Products</label>
+            <select asp-for="SelectedProductId" class="form-input" asp-items="@ViewBag.Products">
+                <option value="">Please Select</option>
+            </select>
+            <span asp-validation-for="SelectedProductId" class="text-red"></span>
+        </div>
+
+        <button type="submit" class="button button-blue-back mt">Assign</button>
+
+        <div asp-validation-summary="All" class="text-red mt"></div>
+
+        @if (ViewBag.Errors != null)
+        {
+            <div class="text-red mt">
+                <ul>
+                    @foreach (string error in ViewBag.Errors)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        }
+    </form>
+
+</div>
+

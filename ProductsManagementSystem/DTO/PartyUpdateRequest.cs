@@ -6,7 +6,7 @@ namespace ProductsManagementSystem.DTO
     public class PartyUpdateRequest
     {
         [Required(ErrorMessage = "Party ID can't be blank")]
-        public Guid PartyID { get; set; }
+        public int PartyID { get; set; }
 
         [Required(ErrorMessage = "Add Party Name")]
         public string PartyName { get; set; }

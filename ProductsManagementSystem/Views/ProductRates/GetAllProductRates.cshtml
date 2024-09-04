@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ProductRateResponse>
+
+@{
+    ViewBag.Title = "Product Rates";
+}
+
+<h1>History of Rates</h1>
+
+<div class="table-responsive">
+    <table class="table w-100 mt">
+        <thead>
+            <tr>
+                <th class="text-center">Id</th>
+                <th class="text-center">Product Name</th>
+                <th class="text-center">Price</th>
+                <th class="text-center">Effective Date</th>
+                <th class="text-center">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td class="text-center">@product.ProductRateId</td>
+                    <td class="text-center">@product.ProductName</td>
+                    <td class="text-center">@product.Rate</td>
+                    <td class="text-center">@product.EffectiveDate.ToString("dd-MM-yyyy")</td>
+                    <td class="text-center">
+                        <a asp-action="Details" asp-controller="Products" asp-route-productId="@product.productId" >
+                            Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

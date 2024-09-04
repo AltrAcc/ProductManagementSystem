@@ -14,18 +14,18 @@ namespace ProductsManagementSystem.Services
             _db = db;
         }
 
-        public ProductAddResponse AddProduct(ProductAddRequest? ProductAddRequest)
+        public ProductAddResponse AddProduct(ProductAddRequest? productAddRequest)
         {
-            if (ProductAddRequest == null) throw new ArgumentNullException(nameof(ProductAddRequest));
+            if (productAddRequest == null) throw new ArgumentNullException(nameof(ProductAddResponse));
 
-            if (ProductAddRequest.ProductName == null) throw new ArgumentException(nameof(ProductAddRequest.ProductName));
+            if (productAddRequest.ProductName == null) throw new ArgumentException(nameof(productAddRequest.ProductName));
 
 
-            //Convert object from ProductAddRequest to product type
-            Product product = ProductAddRequest.ToProduct();
+            //Convert object from ProductAddResponse to product type
+            Product product = productAddRequest.ToProduct();
 
             //Generate PartyID
-            product.ProductID = Guid.NewGuid();
+            //product.ProductID = Guid.Newint();
 
             //Add product object to table
             _db.Add(product);
@@ -33,8 +33,8 @@ namespace ProductsManagementSystem.Services
 
             var productRate = new ProductRate
             {
-                ProductID = product.ProductID,
-                Rate = (decimal)ProductAddRequest.ProductPrice, 
+                ProductID = product.ProductID, 
+                Rate = (decimal)productAddRequest.ProductPrice, 
                 EffectiveDate = DateTime.Now 
             };
 
@@ -46,13 +46,80 @@ namespace ProductsManagementSystem.Services
             return product.ToProductResponse(productRate);
         }
 
-        public List<ProductAddResponse> GetAllProduct()
+        public bool DeleteProduct(int productID)
         {
-            return _db.Products.ToList()
-                .Select(temp => ConvertProductToProductResponse(temp)).ToList();
+            var product = _db.Products.Find(productID);
+            if (product == null)
+            {
+                throw new InvalidOperationException("Product Not Found");
+            }
+
+            // Remove Price as well from ProductRate
+            var productRates = _db.ProductRates.Where(pr => pr.ProductID == productID).ToList();
+            _db.ProductRates.RemoveRange(productRates);
+
+            _db.Products.Remove(product);
+
+            _db.SaveChanges();
+
+            return true;
         }
 
+        public IEnumerable<ProductAddResponse> GetAllProduct()
+        {
+            var products = _db.Products.Select(p => new
+            {
+                p.ProductID,
+                p.ProductName,
+                p.ProductDescription,
+                Rate = _db.ProductRates
+                    .Where(pr => pr.ProductID == p.ProductID)
+                    .OrderByDescending(pr => pr.EffectiveDate)
+                    .Select(pr => pr.Rate)
+                    .FirstOrDefault()
+            }).ToList();
 
+            var productAddResponse = products.Select(p => new ProductAddResponse
+            {
+                ProductID = p.ProductID,
+                ProductName = p.ProductName,
+                ProductDescription = p.ProductDescription,
+                ProductPrice = p.Rate
+            });
+
+            return productAddResponse;
+        }
+
+        public ProductAddResponse GetProductById(int productID)
+        {
+            var product = _db.Products.Find(productID);
+            if (product == null)
+            {
+                throw new InvalidOperationException("Product Not Found");
+            }
+
+            ProductRate? productRate = _db.ProductRates.Where(p => p.ProductID == productID && p.EffectiveDate <= DateTime.Now).OrderByDescending(p => p.EffectiveDate).FirstOrDefault();
+
+            return product.ToProductResponse(productRate);
+        }
+
+        public ProductAddResponse UpdateProduct(ProductAddResponse? ProductAddResponse)
+        {
+            if (ProductAddResponse == null)
+            {
+                throw new ArgumentNullException(nameof(ProductAddResponse));
+            }
+
+            var product = _db.Products.Find(ProductAddResponse.ProductID);
+            if (product == null)
+            {
+                throw new InvalidOperationException("Product not found");
+            }
+
+            product.ProductName = ProductAddResponse.ProductName;
+            _db.SaveChanges();
+            return ProductAddResponse;
+        }
 
         private ProductAddResponse ConvertProductToProductResponse(Product product)
         {

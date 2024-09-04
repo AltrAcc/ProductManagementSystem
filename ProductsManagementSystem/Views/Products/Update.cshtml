@@ -1,0 +1,61 @@
+﻿@model ProductAddResponse
+
+@{
+    ViewBag.Title = "Update Product";
+}
+
+<a asp-controller="Products" asp-action="Index">Back to Products List</a>
+
+<h1> Update Product </h1>
+
+<div class="center-box">
+    <form asp-controller="Products" asp-action="Update" method="post">
+
+        @* Product Name *@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="ProductName" class="form-label pt">Product Name</label>
+            </div>
+            <div class="flex-1">
+                <input asp-for="ProductName" class="form-input" placeholder="Enter Product Name" value="@Model.ProductName" />
+                <span asp-validation-for="ProductName" class="text-red"></span>
+            </div>
+        </div>
+
+        @* Product Price *@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="ProductPrice" class="form-label pt">Product Price</label>
+            </div>
+            <div class="flex-1">
+                <input asp-for="ProductPrice" class="form-input" readonly value="@Model.ProductPrice" />
+                <input asp-for="ProductID" type="hidden" />
+                <span asp-validation-for="ProductPrice" class="text-red"></span>
+            </div>
+        </div>
+
+        @* Submit *@
+        <div class="form-field flex">
+            <div class="w-25">
+            </div>
+            <div class="flex-1">
+                <button type="submit" class="button button-green-back">Update</button>
+
+                <div asp-validation-summary="All" class="text-red"></div>
+
+                @if (ViewBag.Errors != null)
+                {
+                    <div class="text-red ml">
+                        <ul>
+                            @foreach (string error in ViewBag.Errors)
+                            {
+                                <li class="ml">@error</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </form>
+</div>

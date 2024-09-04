@@ -5,7 +5,7 @@ namespace ProductsManagementSystem.DTO
 {
     public class ProductAddResponse
     {
-        public Guid ProductID { get; set; }
+        public int ProductID { get; set; }
 
         public string? ProductName { get; set; }
 

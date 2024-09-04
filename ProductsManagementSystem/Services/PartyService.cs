@@ -31,7 +31,7 @@ namespace ProductsManagementSystem.Services
             Party party = partyRequest.ToParty();
 
             //Generate PartyID
-            party.PartyID = Guid.NewGuid();
+            //party.PartyID = int.Newint();
 
             //Add party object to table
             _db.Add(party);
@@ -42,11 +42,12 @@ namespace ProductsManagementSystem.Services
 
         public List<PartyResponse> GetAllParties()
         {
-            return _db.Parties.ToList()
-                .Select(temp => ConvertPartyToPartyResponse(temp)).ToList();
+            //return _db.Parties.ToList()
+            //    .Select(temp => ConvertPartyToPartyResponse(temp)).ToList();
+            return _db.Parties.Select(p => p.ToPartyResponse()).ToList();
         }
 
-        public PartyResponse? GetPartyById(Guid? PartyID)
+        public PartyResponse? GetPartyById(int? PartyID)
         {
             if (PartyID == null)
                 return null;
@@ -77,7 +78,7 @@ namespace ProductsManagementSystem.Services
             return party.ToPartyResponse();
         }
 
-        public bool DeleteParty(Guid? partyID)
+        public bool DeleteParty(int? partyID)
         {
             if (partyID == null)
             {
@@ -85,13 +86,13 @@ namespace ProductsManagementSystem.Services
             }
 
             Party? person = _db.Parties.FirstOrDefault(temp => temp.PartyID == partyID);
-            
+
             if (person == null)
                 return false;
 
             _db.Parties
                 .Remove(_db.Parties.First(temp => temp.PartyID == partyID));
-            _db.SaveChanges(); 
+            _db.SaveChanges();
 
             return true;
         }
@@ -151,6 +152,12 @@ namespace ProductsManagementSystem.Services
 
             return sortedParties;
         }
+
+        public PartyResponse? GetPartyByName(string PartyName)
+        {
+            var party = _db.Parties.Find(PartyName);
+            return party.ToPartyResponse();
+        }
     }
- }
+}
 

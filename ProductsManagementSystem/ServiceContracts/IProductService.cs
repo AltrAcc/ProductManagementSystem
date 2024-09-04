@@ -5,6 +5,12 @@ namespace ProductsManagementSystem.ServiceContracts
     public interface IProductService
     {
         ProductAddResponse AddProduct(ProductAddRequest? request);
-        List<ProductAddResponse> GetAllProduct();
+        IEnumerable<ProductAddResponse> GetAllProduct();
+
+        public ProductAddResponse UpdateProduct(ProductAddResponse? response);
+
+        public bool DeleteProduct(int ProductId);
+
+        public ProductAddResponse GetProductById(int ProductId);
     }
 }
