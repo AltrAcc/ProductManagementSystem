@@ -8,77 +8,116 @@ namespace ProductsManagementSystem.Services
     public class InvoiceService : IInvoiceService
     {
         private readonly ApplicationDbContext _db;
-        private readonly IProductAssignmentService _productAssignmentService;
-
-        public InvoiceService(ApplicationDbContext db, IProductAssignmentService productAssignmentService)
+        private readonly IPartyService _partyService;
+        public InvoiceService(ApplicationDbContext db, IPartyService partyService)
         {
             _db = db;
-            _productAssignmentService = productAssignmentService;
+            _partyService = partyService;
         }
-        public InvoiceResponse Create(List<InvoiceRequest> invoiceData)
+
+        public InvoiceResponse AddInvoice(IEnumerable<InvoiceRequest> invoiceRequest, int partyId)
         {
-            if (invoiceData == null || invoiceData.Count == 0)
+            if (invoiceRequest == null)
             {
-                throw new ArgumentException("Invoice data cannot be null or empty.");
+                throw new ArgumentNullException(nameof(invoiceRequest));
             }
 
-            // Retrieve the party details
-            var party = _db.Parties.Find(invoiceData.First().PartyId);
-            if (party == null)
-            {
-                throw new Exception("Invalid Party Id.");
-            }
+            decimal TotalPrice = invoiceRequest.Select(x => x.Price * x.Quantity).Sum();
 
-            // Create the invoice entity
-            var invoice = new Invoice
+            Console.WriteLine(TotalPrice);
+
+            Invoice invoice = new Invoice()
             {
-                PartyId = party.PartyID,
-                InvoiceDate = DateTime.Now
+                PartyId = partyId,
+                InvoiceDate = DateTime.Now,
             };
+
             _db.Invoices.Add(invoice);
             _db.SaveChanges();
 
-            // Initialize the total amount
-            decimal totalAmount = 0;
-
-            // Process each product in the invoice
-            foreach (var item in invoiceData)
+            foreach (var item in invoiceRequest)
             {
-                var product = _productAssignmentService.GetProductById(item.ProductId);
-                if (product == null)
-                {
-                    throw new Exception($"Product with Id {item.ProductId} not found.");
-                }
-
-                // Calculate total price for the product
-                decimal productTotal = (decimal)(item.Quantity * product.ProductPrice);
-                totalAmount += productTotal;
-
-                // Create the invoice details
-                var invoiceDetail = new InvoiceDetails
+                InvoiceDetails invoiceDetails = new InvoiceDetails()
                 {
                     InvoiceId = invoice.InvoiceId,
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
-                    Price = (int)product.ProductPrice // Assuming price is stored as an int
+                    Price = (int)item.Price,
                 };
-
-                _db.InvoicesDetails.Add(invoiceDetail);
+                _db.InvoicesDetails.Add(invoiceDetails);
             }
-
-            // Save all changes to the database
             _db.SaveChanges();
 
-            // Return the invoice response
-            return new InvoiceResponse
+            return new InvoiceResponse()
             {
+                PartyId = partyId,
                 InvoiceId = invoice.InvoiceId,
-                PartyId = party.PartyID,
-                PartyName = party.PartyName,
-                ProductCount = invoiceData.Count,
-                Total = totalAmount
+                ProductCount = invoiceRequest.Count(),
+                Total = TotalPrice,
             };
         }
 
+        public IEnumerable<InvoiceResponse> GetAllInvoice()
+        {
+            var invoiceSummaries = _db.Invoices
+                .Select(invoice => new InvoiceResponse
+                {
+                    InvoiceId = invoice.InvoiceId,
+                    PartyId = invoice.PartyId,
+                    PartyName = _db.Parties.Where(p => p.PartyID == invoice.PartyId).FirstOrDefault().PartyName,
+                    ProductCount = invoice.InvoiceDetails.Count(),
+                    Total = invoice.InvoiceDetails.Sum(detail => detail.Quantity * detail.Price)
+                })
+                .ToList();
+
+            return invoiceSummaries;
+        }
+
+        public IEnumerable<InvoiceResponse> GetInvoiceByPartyId(int partyId)
+        {
+            var partyInvoice = _db.Invoices.Where(invoice => invoice.PartyId == partyId)
+                .Select(invoice => new InvoiceResponse
+                {
+                    InvoiceId = invoice.InvoiceId,
+                    PartyId = invoice.PartyId,
+                    PartyName = _db.Parties.Where(p => p.PartyID == invoice.PartyId).FirstOrDefault().PartyName,
+                    ProductCount = invoice.InvoiceDetails.Count(),
+                    Total = invoice.InvoiceDetails.Sum(detail => detail.Quantity * detail.Price),
+                    InvoiceDate = invoice.InvoiceDate,
+
+                }).ToList();
+
+            return partyInvoice;
+        }
+
+        public InvoiceViewModel GetInvoiceDetailsByInvoiceId(int invoiceId)
+        {
+            try
+            {
+                var Invoice = _db.Invoices.Find(invoiceId);
+            }
+            catch (Exception error)
+            {
+                throw error;
+            }
+
+            InvoiceViewModel InvoiceDetail = _db.Invoices.Where(invoice => invoice.InvoiceId == invoiceId).Select(invoice => new InvoiceViewModel
+            {
+                InvoiceId = invoice.InvoiceId,
+                PartyId = invoice.PartyId,
+                PartyName = _db.Parties.Where(party => party.PartyID == invoice.PartyId).FirstOrDefault().PartyName,
+                InvoiceDate = invoice.InvoiceDate,
+                invoiceItems = invoice.InvoiceDetails.Select(item => new InvoiceItems
+                {
+                    ProductId = item.ProductId,
+                    ProductName = _db.Products.Where(product => product.ProductID == item.ProductId).FirstOrDefault().ProductName,
+                    Quantity = item.Quantity,
+                    Price = item.Price,
+                })
+            }).First();
+
+            return InvoiceDetail;
+
+        }
     }
 }

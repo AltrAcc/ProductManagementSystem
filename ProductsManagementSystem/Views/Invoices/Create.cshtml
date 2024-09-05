@@ -68,19 +68,19 @@
 </script>
  *@
 
- 
- @model List<ProductsManagementSystem.DTO.InvoiceRequest>
+
+@* @model List<ProductsManagementSystem.DTO.InvoiceRequest>
 @{
     ViewBag.Title = "Create Invoice";
     var assignedProducts = ViewBag.AssignedProducts;
     var invoiceResponse = ViewBag.InvoiceResponse;
-    int index = 0; 
+    int index = 0;
 }
 
 <h2>Create Invoice</h2>
 
 <form asp-action="Create" asp-controller="Invoices" method="post">
-@* <form asp-action="Create" method="post"> *@
+<!--<form asp-action="Create" method="post"> -->
     <input type="hidden" name="PartyId" value="@ViewBag.PartyId" />
 
     <table class="table">
@@ -135,140 +135,196 @@
             }
         </tbody>
     </table>
-} 
-
-
-@* 
-@model List<ProductsManagementSystem.DTO.InvoiceRequest>
-@{
-    ViewBag.Title = "Create Invoice";
-    var assignedProducts = ViewBag.AssignedProducts;
-    var invoiceResponse = ViewBag.InvoiceResponse;
-}
-
-<h2>Create Invoice</h2>
-
-<form asp-action="Create" asp-controller="Invoices" method="post">
-    <input type="hidden" name="invoiceData[0].PartyId" value="@ViewBag.PartyId" />
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int index = 0; index < assignedProducts.Count; index++)
-            {
-                <tr>
-                    <td>@assignedProducts[index].ProductName</td>
-                    <td>
-                        <input type="hidden" name="invoiceData[@index].ProductId" value="@assignedProducts[index].ProductID" />
-                        <input type="hidden" name="invoiceData[@index].PartyId" value="@ViewBag.PartyId" />
-                        <input type="number" name="invoiceData[@index].Quantity" class="form-control" min="1" value="1" />
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <button type="submit" class="btn btn-primary">Create Invoice</button>
-</form>
-
-@if (invoiceResponse != null)
-{
-    <h3>Invoice Generated</h3>
-    <p><strong>Party Name:</strong> @invoiceResponse.PartyName</p>
-    <p><strong>Total Amount:</strong> $@invoiceResponse.Total</p>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var detail in invoiceResponse.InvoiceDetails)
-            {
-                <tr>
-                    <td>@detail.ProductName</td>
-                    <td>@detail.Quantity</td>
-                    <td>$@detail.Price</td>
-                    <td>$@(detail.Quantity * detail.Price)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 }  *@
 
-@* 
-@model ProductsManagementSystem.DTO.InvoiceViewModel
+@model InvoiceViewModel
 @{
-    ViewBag.Title = "Create Invoice";
-    var assignedProducts = Model.AssignedProducts;
-    var invoiceResponse = Model.InvoiceResponse;
+    ViewBag.Title = "Invoice";
 }
 
-<h2>Create Invoice</h2>
+<h1>Invoices</h1>
 
-<form asp-action="Create" asp-controller="Invoices" method="post">
-    <input type="hidden" name="PartyId" value="@Model.PartyId" />
 
-    <table class="table">
+<div class="center-box">
+    <form id="addProductForm">
+        <input type="hidden" value="@Model.PartyId" id="partyId" />
+
+        <!-- Party -->
+        <div class="form-field flex">
+            <div class="w-25">
+                <label for="Party" class="form-label pt">Party</label>
+            </div>
+            <div class="flex-1">
+                @{
+                    if (Model.PartyId == 0)
+                    {
+                        <select class="form-input" id="party-selection">
+                            <option value="">Select Party</option>
+                            @foreach (var party in ViewBag.Party)
+                            {
+                                <option value="@party.Value">@party.Text</option>
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <input class="form-input" readonly value="@Model.PartyName">
+                    }
+                }
+                <span class="text-red"></span>
+            </div>
+        </div>
+
+        @foreach (var product in ViewBag.products)
+        {
+            <div class="form-field flex">
+                <!-- Product Name as a label -->
+                <div class="w-25">
+                    <label class="form-label pt ">@product.ProductName</label>
+                </div>
+
+                <!-- Quantity Input -->
+                <div class="flex-1">
+                    <input type="hidden" name="Products[@product.ProductId].ProductId" value="@product.ProductId" />
+                    <input type="number" class="form-input" name="Products[@product.ProductId].Quantity" id="quantity-@product.ProductId" value="0" placeholder="0" min="0" required>
+                    <span class="text-red"></span>
+                </div>
+            </div>
+        }
+
+        <!-- Price -->
+        @* <div class="form-field flex">
+        <div class="w-25">
+        <label for="Price" class="form-label pt">Price</label>
+        </div>
+        <div class="flex-1">
+        <input type="number" class="form-input" id="price" placeholder="Price" readonly>
+        <span class="text-red"></span>
+        </div>
+        </div> *@
+
+        <!-- Submit Button -->
+        <div class="form-field flex">
+            <div class="w-25"></div>
+            <div class="flex-1">
+                <button type="submit" id="AddBtn" class="button button-green-back">Add</button>
+                <div asp-validation-summary="All" class="text-red"></div>
+            </div>
+        </div>
+
+        @* <div class="form-field flex">
+        <div class="w-25"></div>
+        <div class="flex-1">
+        <button class="btn btn-secondary" id="generateInvoiceButton">Generate Invoice</button>
+        </div>
+
+        </div> *@
+
+    </form>
+</div>
+
+
+<div class="center-box">
+    <h3>Invoive Details</h3>
+
+    <table class="table w-100 mt" id="InvoiceProdcuts">
         <thead>
             <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int index = 0; index < assignedProducts.Count; index++)
-            {
-                <tr>
-                    <td>@assignedProducts[index].ProductName</td>
-                    <td>
-                        <input type="hidden" name="invoiceData[@index].ProductId" value="@assignedProducts[index].ProductID" />
-                        <input type="hidden" name="invoiceData[@index].PartyId" value="@Model.PartyId" />
-                        <input type="number" name="invoiceData[@index].Quantity" class="form-control" min="1" value="1" />
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <button type="submit" class="btn btn-primary">Create Invoice</button>
-</form>
-
-@if (invoiceResponse != null)
-{
-    <h3>Invoice Generated</h3>
-    <p><strong>Party Name:</strong> @invoiceResponse.PartyName</p>
-    <p><strong>Total Amount:</strong> $@invoiceResponse.Total</p>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
+                <th>Product Id</th>
+                <th>Product Name</th>
                 <th>Quantity</th>
                 <th>Price</th>
-                <th>Total</th>
+                <th>Sub Total</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var detail in invoiceResponse.InvoiceDetails)
-            {
-                <tr>
-                    <td>@detail.ProductName</td>
-                    <td>@detail.Quantity</td>
-                    <td>$@detail.Price</td>
-                    <td>$@(detail.Quantity * detail.Price)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-} *@
+        <tbody id="invoiceBody">
 
+        </tbody>
+    </table><br /><br />
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" id="generateInvoiceButton">Create Invoice</button>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        var invoiceData = [];
+
+        $(document).ready(function () {
+            var products = @Html.Raw(Json.Serialize(ViewBag.products));
+
+            console.log(products);
+
+            $('#addProductForm').on('submit', function (event) {
+                event.preventDefault();
+
+                $('#InvoiceProducts tbody').empty();
+                $('#AddBtn').prop('disabled', true);
+
+                products.forEach(function (product) {
+                    var productId = product.productId;
+                    var productName = product.productName;
+                    var price = parseFloat(product.price);
+                    var quantityInput = $('#quantity-' + productId);
+                    var quantity = parseInt(quantityInput.val());
+
+
+                    if (quantity > 0) {
+                        var subtotal = quantity * price;
+
+                        // Append new row to the invoice table
+                        $('#invoiceBody').append(
+                            '<tr>' +
+                            '<td>' + productId + '</td>' +
+                            '<td>' + productName + '</td>' +
+                            '<td>' + quantity + '</td>' +
+                            '<td>' + price.toFixed(2) + '</td>' +
+                            '<td>' + subtotal.toFixed(2) + '</td>' +
+                            '</tr>'
+                        );
+
+                        // Add product data to invoiceData array
+                        invoiceData.push({
+                            ProductId: productId,
+                            ProductName: productName,
+                            Quantity: quantity,
+                            Price: price,
+                            Subtotal: subtotal
+                        });
+                    }
+                });
+                $('#AddBtn').prop('disabled', true);
+            });
+
+            $('#generateInvoiceButton').on('click', function (event) {
+                event.preventDefault();
+
+                if (invoiceData.length === 0) {
+                    alert('Add at least one product');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/Invoices/CreateInvoice',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(invoiceData),
+                    success: function (response) {
+                        alert('Invoice created successfully!');
+                        window.location.href = "/Invoices/Index";
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                        alert('Error: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+
+} 

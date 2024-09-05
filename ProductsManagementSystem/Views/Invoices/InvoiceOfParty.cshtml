@@ -1,0 +1,36 @@
+﻿@model IEnumerable<InvoiceResponse>
+
+@{
+    ViewBag.Title = "Party Invoice";
+}
+
+<h1> Party Invoice </h1>
+
+<table class="table w-100 mt" id="Party">
+    <thead>
+        <tr>
+            <th>Invoice Id</th>
+            <th>Party Name</th>
+            <th>Total Product</th>
+            <th>Billing Price</th>
+            <th>Invoice Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var invoice in Model)
+        {
+            <tr>
+                <td>@invoice.InvoiceId</td>
+                <td>@invoice.PartyName</td>
+                <td>@invoice.ProductCount</td>
+                <td>@invoice.Total</td>
+                <td>@invoice.InvoiceDate.ToString("dd-mm-yyyy")</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Invoice" asp-route-invoiceId="@invoice.InvoiceId" class="btn btn-outline-info btn-sm">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

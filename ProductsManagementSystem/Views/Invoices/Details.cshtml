@@ -1,0 +1,48 @@
+﻿@model InvoiceViewModel
+
+@{
+    ViewBag.Title = "Invoice Details";
+}
+
+<div class="d-flex flex-column shadow-sm p-3 my-2 bg-dark rounded p-3">
+
+    <h1>Invoice</h1>
+    <h4> Party Name : @Model.PartyName</h4>
+    <p> Invoice Date : @Model.InvoiceDate</p>
+    <p> Invoice Id :  @Model.InvoiceId </p>
+    <p> Party Id : @Model.PartyId</p>
+
+    <table class="table w-100 mt" id="Party">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var produt in Model.invoiceItems)
+            {
+                <tr>
+                    <td>@produt.ProductId</td>
+                    <td>@produt.ProductName</td>
+                    <td>@produt.Quantity</td>
+                    <td>@produt.Price</td>
+                    <td>@(produt.Quantity * produt.Price)</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+    @{
+        var TotalPrice = Model.invoiceItems.Sum(p => p.Quantity * p.Price);
+        <div>
+            <h3 class="text-end">Total : @TotalPrice</h3>
+        </div>
+    }
+
+
+    @* table w-100 mt *@

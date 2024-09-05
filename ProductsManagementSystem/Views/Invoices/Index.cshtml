@@ -4,4 +4,30 @@
 
 <h1>All Invoice</h1>
 
- @* show all created invoice in table with created date *@
+
+<table class="table w-100 mt" id="InvoiceTable">
+    <thead>
+        <tr>
+            <th>Invoice ID</th>
+            <th>PartyName</th>
+            <th>Total Product</th>
+            <th>Total Bill</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var invoice in Model)
+        {
+            <tr>
+                <td>@invoice.InvoiceId</td>
+                <td>@invoice.PartyName</td>
+                <td>@invoice.ProductCount</td>
+                <td>@invoice.Total</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Invoice" asp-route-InvoiceId="@invoice.InvoiceId" class="btn btn-info btn-sm">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

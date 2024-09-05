@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProductManagementSystem.Models;
 using ProductsManagementSystem.DTO;
@@ -21,75 +22,116 @@ namespace ProductManagementSystem.Controllers
             _productAssignmentService = productAssignmentService;
         }
 
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
+        //// Show the form and assigned products for a party
+        //[HttpGet]
+        //public IActionResult Create(int partyId)
+        //{
+        //    var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(partyId);
+        //    ViewBag.AssignedProducts = assignedProducts;
+        //    ViewBag.PartyId = partyId;
+        //    return View();
+        //    //var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(partyId).ToList();
+
+        //    //var viewModel = new InvoiceViewModel
+        //    //{
+        //    //    PartyId = partyId,
+        //    //    AssignedProducts = assignedProducts,
+        //    //    InvoiceResponse = null // Or set this if you have an existing invoice response
+        //    //};
+
+        //    //return View(viewModel);
+        //}
+
+
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<InvoiceResponse> allInvoices = _invoiceService.GetAllInvoice();
+            return View(allInvoices);
         }
 
-        // Show the form and assigned products for a party
         [HttpGet]
-        public IActionResult Create(int partyId)
+        public IActionResult Create(int? partyId)
         {
-            var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(partyId);
-            ViewBag.AssignedProducts = assignedProducts;
-            ViewBag.PartyId = partyId;
-            return View();
-            //var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(partyId).ToList();
+            ViewBag.Party = _partyService.GetAllParties().Select(p => new
+            {
+                Text = p.PartyName,
+                Value = p.PartyID.ToString()
+            });
+            InvoiceViewModel invoiceView;
 
-            //var viewModel = new InvoiceViewModel
-            //{
-            //    PartyId = partyId,
-            //    AssignedProducts = assignedProducts,
-            //    InvoiceResponse = null // Or set this if you have an existing invoice response
-            //};
-
-            //return View(viewModel);
+            if (partyId.HasValue)
+            {
+                var products = _productAssignmentService.GetAssignProductByPartyID(partyId.Value);
+                ViewBag.products = products.Select(p => new
+                {
+                    ProductName = p.ProductName,
+                    ProductId = p.ProductID.ToString(),
+                    Price = p.ProductPrice.ToString()
+                });
+                invoiceView = new InvoiceViewModel()
+                {
+                    PartyId = partyId.Value,
+                    PartyName = _partyService.GetPartyById(partyId.Value).PartyName
+                };
+            }
+            else
+            {
+                invoiceView = new InvoiceViewModel();
+                ViewBag.Products = Enumerable.Empty<SelectListItem>();
+            }
+            return View(invoiceView);
         }
 
 
-        // Handle form submission and generate invoice
         [HttpPost]
-        public IActionResult Create(List<InvoiceRequest> invoiceRequests)
+        public IActionResult CreateInvoice([FromBody] List<InvoiceRequest> invoiceData)
         {
-            if (ModelState.IsValid)
+            Console.WriteLine("Enter in Controller");
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    // Generate the invoice using the service
-                    var invoiceResponse = _invoiceService.Create(invoiceRequests);
-
-                    // Pass the invoice data to the view
-                    ViewBag.InvoiceResponse = invoiceResponse;
-                }
-                catch (Exception ex)
-                {
-                    // Handle errors
-                    ModelState.AddModelError("", ex.Message);
-                }
+                return BadRequest("Invalid invoice data. ");
+            }
+            Console.WriteLine(invoiceData);
+            if (invoiceData == null || invoiceData.Count() == 0)
+            {
+                Console.WriteLine(invoiceData.Count());
+                return BadRequest("Invalid invoice data. ");
             }
 
-            // Re-fetch assigned products for the view in case of validation errors
-            var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(invoiceRequests.First().PartyId);
-            ViewBag.AssignedProducts = assignedProducts;
-            ViewBag.PartyId = invoiceRequests.First().PartyId;
+            InvoiceResponse invoiceResponse = _invoiceService.AddInvoice(invoiceData, invoiceData[0].PartyId);
 
-            return View("Create");
-            //if (invoiceData == null || !invoiceData.Any())
-            //{
-            //    // Handle the case where no data is submitted
-            //    return RedirectToAction("Create");
-            //}
+            return Ok(new { Message = "Invoice created successfully!", Total = invoiceResponse.Total.ToString(), TotalItem = invoiceResponse.ProductCount.ToString() });
+        }
 
-            //var invoiceResponse = _invoiceService.Create(invoiceData);
+        [HttpGet]
+        public IActionResult Details(int invoiceId)
+        {
+            if (invoiceId <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(invoiceId));
+            }
 
-            //var viewModel = new InvoiceViewModel
-            //{
-            //    PartyId = invoiceData.First().PartyId,
-            //    AssignedProducts = _productAssignmentService.GetAssignProductByPartyID(invoiceData.First().PartyId).ToList(),
-            //    InvoiceResponse = invoiceResponse
-            //};
+            InvoiceViewModel invoiceDetail = _invoiceService.GetInvoiceDetailsByInvoiceId(invoiceId);
 
-            //return View(viewModel);
+            return View(invoiceDetail);
+        }
+
+        public IActionResult InvoiceOfParty(int partyId)
+        {
+            if (partyId < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(partyId));
+            }
+
+            IEnumerable<InvoiceResponse> invoiceDetsilByParty = _invoiceService.GetInvoiceByPartyId(partyId);
+
+            return View(invoiceDetsilByParty);
         }
     }
 

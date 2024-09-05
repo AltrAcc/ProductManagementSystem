@@ -4,6 +4,12 @@ namespace ProductsManagementSystem.ServiceContracts
 {
     public interface IInvoiceService
     {
-        InvoiceResponse Create(List<InvoiceRequest> invoiveData);
+        public InvoiceResponse AddInvoice(IEnumerable<InvoiceRequest> invoiceRequest, int PartyId);
+
+        public IEnumerable<InvoiceResponse> GetAllInvoice();
+
+        public IEnumerable<InvoiceResponse> GetInvoiceByPartyId(int partyId);
+
+        public InvoiceViewModel GetInvoiceDetailsByInvoiceId(int invoiceId);
     }
 }
