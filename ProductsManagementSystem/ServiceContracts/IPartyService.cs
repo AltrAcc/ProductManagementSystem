@@ -10,7 +10,7 @@ namespace ProductsManagementSystem.ServiceContracts
         /// Add Party object to parties
         /// </summary>
         /// <param name="request">Party Request</param>
-        /// <returns>Return party object after adding it</returns>
+        /// <returns>Return party object after adding</returns>
         //Task<PartyResponse> AddParty(PartyRequest? request);
         PartyResponse AddParty(PartyRequest? request);
         List<PartyResponse> GetAllParties();
