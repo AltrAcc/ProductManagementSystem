@@ -65,6 +65,76 @@
     background-color: #ececec;
 }
 
+.styled-link {
+    text-decoration: none;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #007bff;
+    transition: background-color 0.3s ease;
+}
+
+    .styled-link:hover {
+        background-color: #007bff; 
+        color: white; 
+    }
+
+.styled-link-edit {
+    text-decoration: none;
+    border: 1px solid #7DDA58;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: black;
+    transition: background-color 0.3s ease;
+}
+
+    .styled-link-edit:hover {
+        background-color: #7DDA58;
+        color: black;
+    }
+
+.styled-link-delete {
+    text-decoration: none;
+    border: 1px solid #E4080A;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: black;
+    transition: background-color 0.3s ease;
+}
+
+    .styled-link-delete:hover {
+        background-color: #E4080A;
+        color: white;
+    }
+
+.styled-link-detail {
+    text-decoration: none;
+    border: 1px solid #EAD701;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: black;
+    transition: background-color 0.3s ease;
+}
+
+    .styled-link-detail:hover {
+        background-color: #EAD701;
+        color: black;
+    }
+
+.styled-link-create {
+    text-decoration: none;
+    border: 1px solid #013CEA;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: black;
+    transition: background-color 0.3s ease;
+}
+
+    .styled-link-create:hover {
+        background-color: #013CEA;
+        color: white;
+    }
+
 .page-content
 {
     min-height: 90vh;
@@ -112,7 +182,7 @@
 
 .table tbody tr:hover
 {
-    background-color: #83b8cb;
+    background-color: ;
 }
 
 .w-25

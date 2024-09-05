@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProductManagementSystem.Models;
 using ProductsManagementSystem.DTO;
 using ProductsManagementSystem.Models;
@@ -25,39 +26,72 @@ namespace ProductManagementSystem.Controllers
             return View();
         }
 
+        // Show the form and assigned products for a party
         [HttpGet]
-        [Route("{partyId}")]
         public IActionResult Create(int partyId)
         {
-            var products = _productAssignmentService.GetAssignProductByPartyID(partyId);
-            ViewBag.products = products.Select(p => new
-            {
-                ProductName = p.ProductName,
-                ProductId = p.ProductID.ToString(),
-                Price = p.ProductPrice.ToString() // Here change
-            });
-            InvoiceView invoiceView = new InvoiceView()
-            {
-                PartyID = partyId,
-                PartyName = _partyService.GetPartyById(partyId).PartyName
-            };
-            return View(invoiceView);
+            var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(partyId);
+            ViewBag.AssignedProducts = assignedProducts;
+            ViewBag.PartyId = partyId;
+            return View();
+            //var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(partyId).ToList();
+
+            //var viewModel = new InvoiceViewModel
+            //{
+            //    PartyId = partyId,
+            //    AssignedProducts = assignedProducts,
+            //    InvoiceResponse = null // Or set this if you have an existing invoice response
+            //};
+
+            //return View(viewModel);
         }
 
+
+        // Handle form submission and generate invoice
         [HttpPost]
-        public IActionResult CreateInvoice([FromBody] List<InvoiceRequest> invoiceData)
+        public IActionResult Create(List<InvoiceRequest> invoiceRequests)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return null;
+                try
+                {
+                    // Generate the invoice using the service
+                    var invoiceResponse = _invoiceService.Create(invoiceRequests);
+
+                    // Pass the invoice data to the view
+                    ViewBag.InvoiceResponse = invoiceResponse;
+                }
+                catch (Exception ex)
+                {
+                    // Handle errors
+                    ModelState.AddModelError("", ex.Message);
+                }
             }
 
-            if (invoiceData == null || invoiceData.Count() == 0)
-            {
-                return null;
-            }
+            // Re-fetch assigned products for the view in case of validation errors
+            var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(invoiceRequests.First().PartyId);
+            ViewBag.AssignedProducts = assignedProducts;
+            ViewBag.PartyId = invoiceRequests.First().PartyId;
 
-            return Ok(new { Message = "Invoice created successfully!" });
+            return View("Create");
+            //if (invoiceData == null || !invoiceData.Any())
+            //{
+            //    // Handle the case where no data is submitted
+            //    return RedirectToAction("Create");
+            //}
+
+            //var invoiceResponse = _invoiceService.Create(invoiceData);
+
+            //var viewModel = new InvoiceViewModel
+            //{
+            //    PartyId = invoiceData.First().PartyId,
+            //    AssignedProducts = _productAssignmentService.GetAssignProductByPartyID(invoiceData.First().PartyId).ToList(),
+            //    InvoiceResponse = invoiceResponse
+            //};
+
+            //return View(viewModel);
         }
     }
-}
+
+ }
+

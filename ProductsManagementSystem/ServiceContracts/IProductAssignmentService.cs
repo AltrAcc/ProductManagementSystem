@@ -11,5 +11,7 @@ namespace ProductsManagementSystem.ServiceContracts
         public IEnumerable<ProductAddResponse> GetNotAssignedProduct(int partyId);
 
         public IEnumerable<ProductAssignmentResponse> GetAllAssignProductAndParty();
+
+        public ProductAddResponse GetProductById(int productId);
     }
 }

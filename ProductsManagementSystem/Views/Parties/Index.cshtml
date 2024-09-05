@@ -1,11 +1,13 @@
 ﻿@model IEnumerable<PartyResponse>
 @{
-    // ViewBag.Title = "Parties";
+    ViewBag.Title = "Parties";
 }
 
 <form asp-controller="Parties" asp-action="Index" method="get">
-    <h1>Parties</h1>
-    <a asp-controller="Parties" asp-action="Create">Create Party</a>
+    <h1>Parties</h1><br />
+    <a asp-controller="Parties" asp-action="Create" class="styled-link">Create Party</a><br />
+    <br />
+    <br />
 
     <div class="box flex">
         <div class="flex-1">
@@ -61,16 +63,16 @@
                     <td style="width:20%">@party.PartyCategory</td>
 
                     <td style="width:20%">
-                        <a asp-controller="Parties" asp-action="Edit" asp-route-partyID="@party.PartyID">Edit</a>
+                        <a asp-controller="Parties" asp-action="Edit" asp-route-partyID="@party.PartyID" class="styled-link-edit">Edit</a>
                         @* /party/Edit/1 *@
 
-                        <a asp-controller="Parties" asp-action="Delete" asp-route-partyID="@party.PartyID">Delete</a>
+                        <a asp-controller="Parties" asp-action="Delete" asp-route-partyID="@party.PartyID" class="styled-link-delete">Delete</a>
                         @* /party/Delete/1 *@
 
-                        <a asp-controller="Parties" asp-action="Details" asp-route-partyID="@party.PartyID">Details</a>
+                        <a asp-controller="Parties" asp-action="Details" asp-route-partyID="@party.PartyID" class="styled-link-detail">Details</a>
                         @* /party/ḍetails/1 *@
 
-                        <a asp-action="create" asp-controller="Invoices" asp-route-partyId="@party.PartyID">Create Invoice</a>
+                        <a asp-action="create" asp-controller="Invoices" asp-route-partyId="@party.PartyID" class="styled-link-create">Create Invoice</a>
                     </td>
                 </tr>
             }

@@ -4,11 +4,14 @@
     ViewBag.Title = "Party Details";
 }
 
-<h1 class="text-lg font-bold mb">Party Details</h1>
+<h1 class="text-lg font-bold mb">Party Details: @Model.PartyResponse.PartyName</h1>
+<br />
 
-<h4 class="text-md font-semibold mb">@Model.PartyResponse.PartyName</h4>
-
-<a asp-action="ProductAssign" asp-controller="ProductAssignment" asp-route-partyId="@Model.PartyResponse.PartyID" class="btn btn-success mt mb">Assign Product</a>
+<a asp-action="ProductAssign" asp-controller="ProductAssignment" asp-route-partyId="@Model.PartyResponse.PartyID" class="styled-link">
+    Assign Product
+</a>
+<br />
+<br />  
 
 <table class="display table w-100 mt">
     <thead class="bg-light-blue">

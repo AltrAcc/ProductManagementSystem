@@ -107,5 +107,32 @@ namespace ProductsManagementSystem.Services
 
             return notPartyProduct;
         }
+
+
+        public ProductAddResponse GetProductById(int productId)
+        {
+            var product = _db.Products
+                .Include(p => p.ProductRates)
+                .Where(p => p.ProductID == productId)
+                .Select(p => new
+                {
+                    Product = p,
+                    ProductRate = p.ProductRates
+                        .Where(pr => pr.EffectiveDate <= DateTime.Now)
+                        .OrderByDescending(pr => pr.EffectiveDate)
+                        .FirstOrDefault()
+                })
+                .AsEnumerable()
+                .Select(p => p.Product.ToProductResponse(p.ProductRate))
+                .FirstOrDefault();
+
+            if (product == null)
+            {
+                throw new Exception("Product not found.");
+            }
+
+            return product;
+        }
+
     }
 }
