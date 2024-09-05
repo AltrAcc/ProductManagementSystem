@@ -1,30 +1,18 @@
-﻿@model IEnumerable<ProductAddResponse>
+﻿@* @model IEnumerable<ProductAddResponse>
 @{
-    // ViewBag.Title = "Parties";
+    ViewBag.Title = "Products";
 }
 
 <form asp-controller="Products" asp-action="Index" method="get">
     <h1>Products</h1>
     <a asp-controller="Products" asp-action="Create">Add Product</a>
 
-    <table class="table w-100 mt">
+    <table class="table w-100 mt" id="productsTable">
         <thead>
             <tr>
-                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
-                { "ColumnName", nameof(ProductAddResponse.ProductName) },
-                { "DisplayName", "Product Name" },
-                })
-
-                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
-                { "ColumnName", nameof(ProductAddResponse.ProductDescription) },
-                { "DisplayName", "Description" },
-                })
-
-                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData) {
-                { "ColumnName", nameof(ProductAddResponse.ProductPrice) },
-                { "DisplayName", "Product Price" },
-                })
-
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Product Price</th>
                 <th>Options</th>
 
             </tr>
@@ -39,13 +27,10 @@
 
                     <td style="width:20%">
                         <a asp-controller="Products" asp-action="Update" asp-route-productID="@product.ProductID">Edit</a>
-                        @* /Product/Edit/1 *@
 
                         <a asp-controller="Products" asp-action="Delete" asp-route-productID="@product.ProductID">Delete</a>
-                        @* /product/Delete/1 *@
 
                         <a asp-controller="Products" asp-action="Details" asp-route-productID="@product.ProductID">Detail</a>
-                        @* /product/Deatil/1*@
                     </td>
                 </tr>
             }
@@ -56,3 +41,71 @@
 
 </form>
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
+<script type="text/javascript"
+        src="https://code.jquery.com/jquery-3.5.1.js">
+</script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#productsTable').DataTable({
+            paging: true,      // Enable pagination
+            searching: true,   // Enable searching
+            ordering: true,    // Enable sorting
+        });
+    });
+</script> *@
+
+@model IEnumerable<ProductAddResponse>
+@{
+    ViewBag.Title = "Products";
+}
+
+<form asp-controller="Products" asp-action="Index" method="get">
+    <h1>Products</h1> <br />
+    <a asp-controller="Products" asp-action="Create" class="styled-link">Add Product</a><br />
+    <br />
+    <br />
+
+    <table class="table w-100 mt" id="productsTable">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Product Price</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ProductAddResponse product in Model)
+            {
+                <tr>
+                    <td style="width:15%">@product.ProductName</td>
+                    <td style="width:20%">@product.ProductDescription</td>
+                    <td style="width:15%">@product.ProductPrice</td>
+                    <td style="width:20%">
+                        <a asp-controller="Products" asp-action="Update" asp-route-productID="@product.ProductID" class="styled-link-edit">Edit</a>
+                        <a asp-controller="Products" asp-action="Delete" asp-route-productID="@product.ProductID" class="styled-link-delete">Delete</a>
+                        <a asp-controller="Products" asp-action="Details" asp-route-productID="@product.ProductID" class="styled-link-detail">Detail</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#productsTable').DataTable({
+            paging: true,      // Enable pagination
+            searching: true,   // Enable searching
+            ordering: true,    // Enable sorting
+        });
+    });
+</script>
