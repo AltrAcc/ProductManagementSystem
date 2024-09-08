@@ -137,7 +137,7 @@
     </table>
 }  *@
 
-@model InvoiceViewModel
+@model InvoiceView
 @{
     ViewBag.Title = "Invoice";
 }
@@ -147,7 +147,7 @@
 
 <div class="center-box">
     <form id="addProductForm">
-        <input type="hidden" value="@Model.PartyId" id="partyId" />
+        <input type="hidden" value="@Model.PartyID" id="partyId" />
 
         <!-- Party -->
         <div class="form-field flex">
@@ -156,7 +156,7 @@
             </div>
             <div class="flex-1">
                 @{
-                    if (Model.PartyId == 0)
+                    if (Model.PartyID == 0)
                     {
                         <select class="form-input" id="party-selection">
                             <option value="">Select Party</option>
@@ -252,6 +252,7 @@
 @section Scripts {
     <script>
         var invoiceData = [];
+        var partyId = $('#partyId').val();
 
         $(document).ready(function () {
             var products = @Html.Raw(Json.Serialize(ViewBag.products));
@@ -288,6 +289,7 @@
 
                         // Add product data to invoiceData array
                         invoiceData.push({
+                            partyId: parseInt(partyId),
                             ProductId: productId,
                             ProductName: productName,
                             Quantity: quantity,
@@ -301,6 +303,8 @@
 
             $('#generateInvoiceButton').on('click', function (event) {
                 event.preventDefault();
+
+                console.log(invoiceData);
 
                 if (invoiceData.length === 0) {
                     alert('Add at least one product');

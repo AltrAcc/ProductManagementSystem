@@ -63,7 +63,7 @@ namespace ProductManagementSystem.Controllers
                 Text = p.PartyName,
                 Value = p.PartyID.ToString()
             });
-            InvoiceViewModel invoiceView;
+            InvoiceView invoiceView;
 
             if (partyId.HasValue)
             {
@@ -74,15 +74,15 @@ namespace ProductManagementSystem.Controllers
                     ProductId = p.ProductID.ToString(),
                     Price = p.ProductPrice.ToString()
                 });
-                invoiceView = new InvoiceViewModel()
+                invoiceView = new InvoiceView()
                 {
-                    PartyId = partyId.Value,
+                    PartyID = partyId.Value,
                     PartyName = _partyService.GetPartyById(partyId.Value).PartyName
                 };
             }
             else
             {
-                invoiceView = new InvoiceViewModel();
+                invoiceView = new InvoiceView();
                 ViewBag.Products = Enumerable.Empty<SelectListItem>();
             }
             return View(invoiceView);

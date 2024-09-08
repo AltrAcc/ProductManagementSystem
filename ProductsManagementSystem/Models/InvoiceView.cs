@@ -10,6 +10,8 @@ namespace ProductsManagementSystem.Models
 
         public int SelectedProductID { get; set; }
 
-        public IEnumerable<ProductAddResponse> Products { get; set; }
+        public int SelectedPartyId { get; set; }
+
+        //public IEnumerable<ProductAddResponse> Products { get; set; }
     }
 }
