@@ -10,7 +10,6 @@
         <tr>
             <th class="text-left p-2">Party Id</th>
             <th class="text-left p-2">Party Name</th>
-            <th class="text-left p-2">Product Id</th>
             <th class="text-left p-2">Product Name</th>
             <th class="text-left p-2">Product Details</th>
         </tr>
@@ -21,10 +20,9 @@
             <tr class="border-b">
                 <td class="p-2">@product.PartyID</td>
                 <td class="p-2">@product.PartyName</td>
-                <td class="p-2">@product.ProductId</td>
                 <td class="p-2">@product.ProductName</td>
                 <td class="p-2">
-                    <a asp-action="Details" asp-controller="Products" asp-route-productId="@product.ProductId">Product Details</a>
+                    <a asp-action="Details" asp-controller="Products" asp-route-productId="@product.ProductId" class="btn btn-outline-info btn-sm">Product Details</a>
                 </td>
             </tr>
         }

@@ -4,17 +4,16 @@
     ViewBag.Title = "Product Rates";
 }
 
-<h1>History of Rates</h1>
+<h1>History of Rates</h1><br />
 
 <div class="table-responsive">
-    <table class="table w-100 mt">
+    <table class="table w-100 mt" id="rates">
         <thead>
             <tr>
                 <th class="text-center">Id</th>
                 <th class="text-center">Product Name</th>
                 <th class="text-center">Price</th>
                 <th class="text-center">Effective Date</th>
-                <th class="text-center">Details</th>
             </tr>
         </thead>
         <tbody>
@@ -25,14 +24,30 @@
                     <td class="text-center">@product.ProductName</td>
                     <td class="text-center">@product.Rate</td>
                     <td class="text-center">@product.EffectiveDate.ToString("dd-MM-yyyy")</td>
-                    <td class="text-center">
-                        <a asp-action="Details" asp-controller="Products" asp-route-productId="@product.productId" >
-                            Details
-                        </a>
-                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('#rates').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                columnDefs: [
+                    {
+                        targets: -1, 
+                        searchable: false,
+                        sortable: false
+                    }
+                ]
+            });
+        });
+    </script>
+}
 

@@ -1,48 +1,64 @@
 ﻿@model InvoiceViewModel
-
 @{
     ViewBag.Title = "Invoice Details";
+    Layout = null;
+
 }
 
-<div class="d-flex flex-column shadow-sm p-3 my-2 bg-dark rounded p-3">
+<!-- Invoice Container -->
+<div class="invoice-container" style="max-width: 800px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; background-color: #fff; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);">
 
-    <h1>Invoice</h1>
-    <h4> Party Name : @Model.PartyName</h4>
-    <p> Invoice Date : @Model.InvoiceDate</p>
-    <p> Invoice Id :  @Model.InvoiceId </p>
-    <p> Party Id : @Model.PartyId</p>
+    <!-- Header Section -->
+    <div class="invoice-header d-flex justify-content-between align-items-center" style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+        <h1 style="font-size: 32px; font-weight: bold; color: #333;">INVOICE</h1>
+        <div class="invoice-details">
+            <p><strong>Invoice Id:</strong> @Model.InvoiceId</p>
+            <p><strong>Invoice Date:</strong> @Model.InvoiceDate.ToString("MM/dd/yyyy")</p>
+        </div>
+    </div>
 
-    <table class="table w-100 mt" id="Party">
+    <!-- Party Information -->
+    <div class="party-details" style="margin-bottom: 30px;">
+        <h3 style="margin-bottom: 5px;"><strong>Bill To:</strong></h3>
+        <p><strong>Party Name:</strong> @Model.PartyName</p>
+    </div>
+
+    <!-- Product Table -->
+    <table class="table table-bordered" style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
         <thead>
-            <tr>
-                <th>Product ID</th>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
+            <tr style="background-color: #f2f2f2; text-align: left;">
+                <th style="padding: 8px; border: 1px solid #ddd;">Product Name</th>
+                <th style="padding: 8px; border: 1px solid #ddd;">Quantity</th>
+                <th style="padding: 8px; border: 1px solid #ddd;">Price</th>
+                <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var produt in Model.invoiceItems)
             {
                 <tr>
-                    <td>@produt.ProductId</td>
-                    <td>@produt.ProductName</td>
-                    <td>@produt.Quantity</td>
-                    <td>@produt.Price</td>
-                    <td>@(produt.Quantity * produt.Price)</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">@produt.ProductName</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">@produt.Quantity</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">@String.Format("{0:C}", produt.Price)</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">@String.Format("{0:C}", produt.Quantity * produt.Price)</td>
                 </tr>
             }
         </tbody>
-
     </table>
 
+    <!-- Total Section -->
     @{
         var TotalPrice = Model.invoiceItems.Sum(p => p.Quantity * p.Price);
-        <div>
-            <h3 class="text-end">Total : @TotalPrice</h3>
-        </div>
     }
+    <div class="invoice-total" style="text-align: right; margin-top: 20px;">
+        <h3 style="font-size: 24px; font-weight: bold;">Grand Total: @String.Format("{0:C}", TotalPrice)</h3>
+    </div>
 
+    <!-- Footer Section -->
+    <div class="invoice-footer" style="margin-top: 40px; text-align: center; border-top: 2px solid #000; padding-top: 10px; font-size: 14px; color: #777;">
+        <p>Thank you for your business!</p>
+        <p><em>This is a computer-generated invoice and does not require a signature.</em></p>
+    </div>
 
-    @* table w-100 mt *@
+</div>
+

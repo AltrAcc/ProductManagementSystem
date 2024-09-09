@@ -4,8 +4,11 @@
     ViewBag.Title = "Party Details";
 }
 
+<a asp-controller="Parties" asp-action="Index">Back to Parties</a>
 <h1 class="text-lg font-bold mb">Party Details: @Model.PartyResponse.PartyName</h1>
 <br />
+
+<a asp-action="InvoiceOfParty" asp-controller="Invoices" asp-route-partyId="@Model.PartyResponse.PartyID" class="styled-link">show Invoices</a>
 
 <a asp-action="ProductAssign" asp-controller="ProductAssignment" asp-route-partyId="@Model.PartyResponse.PartyID" class="styled-link">
     Assign Product
@@ -17,9 +20,8 @@
     <thead class="bg-light-blue">
         <tr>
             <th class="text-left p-2">Product Id</th>
-            <th class="text-left p-2">Product Name</th>
-            <th class="text-left p-2">Product Price</th>
-            <th class="text-left p-2">Action</th>
+            <th class="text-left p-2">Name</th>
+            <th class="text-left p-2">Price</th>
         </tr>
     </thead>
     <tbody>
@@ -29,12 +31,9 @@
                 <td class="p-2">@product.ProductID</td>
                 <td class="p-2">@product.ProductName</td>
                 <td class="p-2">@product.ProductPrice</td>
-                <td class="p-2">
-                    <a asp-action="Details" asp-controller="Products" asp-route-productId="@product.ProductID">Details</a>
-                </td>
             </tr>
         }
     </tbody>
-</table>
+</table><br />
 
 <h4 style="text-decoration:underline" class="text-md font-semibold mt">Total Products: @Model.ProductAddResponse.Count()</h4>
