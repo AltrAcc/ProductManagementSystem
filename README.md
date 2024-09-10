@@ -88,6 +88,13 @@ The **Product Management System** is a web-based application that helps manage p
 ### Configuration
 - Update the connection string in `appsettings.json` to match your SQL Server setup.
 
+## Screenshots
+
+### Parties Management
+![Parties Management](images/1.png)
+
+### Invoice Listing
+![Invoice Listing](images/2.png)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
