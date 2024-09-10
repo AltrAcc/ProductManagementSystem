@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Invoice Details";
     Layout = null;
-
 }
 
 <div class="invoice-container" style="max-width: 800px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; background-color: #fff; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);">
@@ -58,5 +57,9 @@
         <p><em>This is a computer-generated invoice and does not require a signature.</em></p>
     </div>
 
+    <a asp-controller="Invoices" asp-action="InvoicesPDF" asp-route-invoiceId="@Model.InvoiceId" class="styled-link-create"> Download as PDF</a>
+
 </div>
+
+
 

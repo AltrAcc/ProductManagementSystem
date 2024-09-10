@@ -6,6 +6,7 @@ using ProductsManagementSystem.DTO;
 using ProductsManagementSystem.Models;
 using ProductsManagementSystem.ServiceContracts;
 using ProductsManagementSystem.Services;
+using Rotativa.AspNetCore;
 
 namespace ProductManagementSystem.Controllers
 {
@@ -125,6 +126,27 @@ namespace ProductManagementSystem.Controllers
             IEnumerable<InvoiceResponse> invoiceDetsilByParty = _invoiceService.GetInvoiceByPartyId(partyId);
 
             return View(invoiceDetsilByParty);
+        }
+
+        [Route("InvoicePDF")]
+        public async Task<IActionResult> InvoicesPDF(int invoiceId)
+        {
+            //Get Invoice
+            InvoiceViewModel invoiceDetail = _invoiceService.GetInvoiceDetailsByInvoiceId(invoiceId);
+
+            //Return View as PDF
+            return new ViewAsPdf("InvoicePDF", invoiceDetail, ViewData)
+            {
+                PageMargins = new Rotativa.AspNetCore.Options.Margins()
+                {
+                    Top = 20,
+                    Right = 20,
+                    Bottom = 20,
+                    Left = 20,
+                },
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+
+            };
         }
     }
 
