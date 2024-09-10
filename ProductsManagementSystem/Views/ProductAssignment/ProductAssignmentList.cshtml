@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<ProductAssignmentResponse>
 @{
-    ViewBag.Title = "All Product Assignment List";
+    ViewBag.Title = "Assigned Products";
 }
 
 <h3> All Product Assignment</h3><br />
 
-<table class="table w-100 mt">
+<table class="table w-100 mt" id="Products">
     <thead class="bg-light-blue">
         <tr>
             <th class="text-left p-2">Party Id</th>
@@ -22,11 +22,31 @@
                 <td class="p-2">@product.PartyName</td>
                 <td class="p-2">@product.ProductName</td>
                 <td class="p-2">
-                    <a asp-action="Details" asp-controller="Products" asp-route-productId="@product.ProductId" class="btn btn-outline-info btn-sm">Product Details</a>
+                    <a asp-action="Details" asp-controller="Products" asp-route-productId="@product.ProductId" class="btn styled-link-create">Product Details</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+@section Scripts {
 
+    <script>
+        $(document).ready(function () {
+            $('#Products').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                columnDefs: [
+                    {
+                        targets: [-1, -2], 
+                        searchable: false
+                        sortable: false
+                    }
+                ]
+            });
+        });
+    </script>
+
+}

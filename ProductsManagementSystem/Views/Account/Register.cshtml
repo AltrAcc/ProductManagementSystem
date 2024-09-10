@@ -1,24 +1,94 @@
-﻿@using ProductsManagementSystem.DTO
-
-@model RegisterDTO
-
+﻿@model RegisterDTO
 @{
-    ViewBag.Title = "Registration";
+    ViewBag.Title = "Register";
 }
 
-<form asp-controller="Account" asp-action="Register">
-    <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="center-box">
+    <form asp-action="Register" asp-controller="Account" method="post">
+        <h1>Register User</h1>
+
+        @* Email *@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="Email" class="form-label pt">Email address</label>
+            </div>
+            <div class="flex-1">
+                <input type="email" class="form-input" asp-for="Email" placeholder="Enter email">
+                <span asp-validation-for="Email" class="text-red"></span>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+        </div>
+
+        @* Name *@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="PersonName" class="form-label pt">Name</label>
+            </div>
+            <div class="flex-1">
+                <input asp-for="PersonName" class="form-input" placeholder="Name">
+                <span asp-validation-for="PersonName" class="text-red"></span>
+            </div>
+        </div>
+
+        @* Password *@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="Password" class="form-label pt">Password</label>
+            </div>
+            <div class="flex-1">
+                <input asp-for="Password" class="form-input" placeholder="Password">
+                <span asp-validation-for="Password" class="text-red"></span>
+            </div>
+        </div>
+
+        @* Confirm Password *@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label asp-for="ConfirmPassword" class="form-label pt">Confirm Password</label>
+            </div>
+            <div class="flex-1">
+                <input asp-for="ConfirmPassword" class="form-input" placeholder="Confirm Password">
+                <span asp-validation-for="ConfirmPassword" class="text-red"></span>
+            </div>
+        </div>
+
+        @* User Role (Radio Buttons) *@
+        <div class="form-field flex">
+            <div class="w-25">
+                <label class="form-label">Role</label>
+            </div>
+            <div class="flex-1">
+                <div class="form-check-inline">
+                    <input asp-for="UserType" id="User" type="radio" value="User" checked />
+                    <label for="User">User</label>
+                </div>
+                <div class="form-check-inline">
+                    <input asp-for="UserType" id="Admin" type="radio" value="Admin" />
+                    <label for="Admin">Admin</label>
+                </div>
+                <span asp-validation-for="UserType" class="text-red"></span>
+            </div>
+        </div>
+
+        @* Submit Button *@
+        <div class="form-field flex">
+            <div class="w-25"></div>
+            <div class="flex-1">
+                <button type="submit" class="button button-green-back">Submit</button>
+                <div asp-validation-summary="All" class="text-red"></div>
+            </div>
+        </div>
+
+        @if (ViewBag.Errors != null)
+        {
+            <div class="text-red ml">
+                <ul>
+                    @foreach (string error in ViewBag.Errors)
+                    {
+                        <li class="ml">@error</li>
+                    }
+                </ul>
+            </div>
+        }
+    </form>
+</div>

@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProductManagementSystem.Models;
 using ProductsManagementSystem.Models;
 
 namespace ProductsManagementSystem.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -28,12 +29,6 @@ namespace ProductsManagementSystem.Data
             modelBuilder.Entity<Party>().ToTable(nameof(Party));
             modelBuilder.Entity<Product>().ToTable(nameof(Product));
             modelBuilder.Entity<ProductRate>().ToTable(nameof(ProductRate));
-
-            //// Configure relationships and constraints here if needed
-
-            //modelBuilder.Entity<ProductRate>()
-            //    .HasKey(pr => new { pr.ProductId, pr.EffectiveDate });
-
 
         }
     }

@@ -1,72 +1,16 @@
-﻿@* @model IEnumerable<ProductAddResponse>
-@{
-    ViewBag.Title = "Products";
-}
-
-<form asp-controller="Products" asp-action="Index" method="get">
-    <h1>Products</h1>
-    <a asp-controller="Products" asp-action="Create">Add Product</a>
-
-    <table class="table w-100 mt" id="productsTable">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Description</th>
-                <th>Product Price</th>
-                <th>Options</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (ProductAddResponse product in Model)
-            {
-                <tr>
-                    <td style="width:15%">@product.ProductName</td>
-                    <td style="width:20%">@product.ProductDescription</td>
-                    <td style="width:15%">@product.ProductPrice</td>
-
-                    <td style="width:20%">
-                        <a asp-controller="Products" asp-action="Update" asp-route-productID="@product.ProductID">Edit</a>
-
-                        <a asp-controller="Products" asp-action="Delete" asp-route-productID="@product.ProductID">Delete</a>
-
-                        <a asp-controller="Products" asp-action="Details" asp-route-productID="@product.ProductID">Detail</a>
-                    </td>
-                </tr>
-            }
-            <tr></tr>
-        </tbody>
-
-    </table>
-
-</form>
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
-<script type="text/javascript"
-        src="https://code.jquery.com/jquery-3.5.1.js">
-</script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
-</script>
-
-
-<script>
-    $(document).ready(function () {
-        $('#productsTable').DataTable({
-            paging: true,      // Enable pagination
-            searching: true,   // Enable searching
-            ordering: true,    // Enable sorting
-        });
-    });
-</script> *@
-
-@model IEnumerable<ProductAddResponse>
+﻿@model IEnumerable<ProductAddResponse>
 @{
     ViewBag.Title = "Products";
 }
 
 <form asp-controller="Products" asp-action="Index" method="get">
     <h1>Products</h1> <br />
-    <a asp-controller="Products" asp-action="Create" class="styled-link">Add Product</a><br />
+    
+    @if(User.IsInRole("Admin"))
+    {
+        <a asp-controller="Products" asp-action="Create" class="styled-link">Add Product</a><br />
+    }
+
     <br />
     <br />
 
@@ -87,8 +31,11 @@
                     <td style="width:20%">@product.ProductDescription</td>
                     <td style="width:15%">@product.ProductPrice</td>
                     <td style="width:20%">
-                        <a asp-controller="Products" asp-action="Update" asp-route-productID="@product.ProductID" class="styled-link-edit">Edit</a>
-                        <a asp-controller="Products" asp-action="Delete" asp-route-productID="@product.ProductID" class="styled-link-delete">Delete</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Products" asp-action="Update" asp-route-productID="@product.ProductID" class="styled-link-edit">Edit</a>
+                            <a asp-controller="Products" asp-action="Delete" asp-route-productID="@product.ProductID" class="styled-link-delete">Delete</a>
+                        }
                         <a asp-controller="Products" asp-action="Details" asp-route-productID="@product.ProductID" class="styled-link-detail">Detail</a>
                     </td>
                 </tr>

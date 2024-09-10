@@ -1,143 +1,4 @@
-﻿@* @model InvoiceView
-
-<div class="center-box">
-    <form id="addProductForm">
-        <input type="hidden" value="@Model.PartyID" id="partyId" />
-
-        <!-- Party -->
-        <div class="form-field flex">
-            <div class="w-25">
-                <label for="Party" class="form-label pt">Party</label>
-            </div>
-            <div class="flex-1">
-                <input class="form-input" readonly value="@Model.PartyName">
-                <span class="text-red"></span>
-            </div>
-        </div>
-
-        <!-- Product with Quantity Inputs -->
-        @foreach (var product in ViewBag.products)
-        {
-            <div class="form-field flex">
-                <div class="w-25">
-                    <label class="form-label pt">@product.ProductName</label>
-                </div>
-                <div class="flex-1">
-                    <input type="hidden" name="Products[@product.ProductId].ProductId" value="@product.ProductId" />
-                    <input type="number" class="form-input" name="Products[@product.ProductId].Quantity" placeholder="Quantity" min="0" required>
-                    <span class="text-red"></span>
-                </div>
-            </div>
-        }
-
-        <!-- Submit -->
-        <div class="form-field flex">
-            <div class="w-25"></div>
-            <div class="flex-1">
-                <button type="submit" class="button button-green-back">Create</button>
-                <div asp-validation-summary="All" class="text-red"></div>
-            </div>
-        </div>
-    </form>
-
-    <!-- Invoice Display Section -->
-    <div id="invoice-result" class="invoice-box"></div>
-</div>
-
-<script>
-    $(document).ready(function() {
-        $('#addProductForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = $(this).serialize();
-
-            $.ajax({
-                url: '@Url.Action("Create", "Invoices")',
-                method: 'POST',
-                data: formData,
-                success: function(response) {
-                    // Render the invoice below the form
-                    $('#invoice-result').html(response);
-                },
-                error: function() {
-                    alert('There was an error generating the invoice.');
-                }
-            });
-        });
-    });
-</script>
- *@
-
-
-@* @model List<ProductsManagementSystem.DTO.InvoiceRequest>
-@{
-    ViewBag.Title = "Create Invoice";
-    var assignedProducts = ViewBag.AssignedProducts;
-    var invoiceResponse = ViewBag.InvoiceResponse;
-    int index = 0;
-}
-
-<h2>Create Invoice</h2>
-
-<form asp-action="Create" asp-controller="Invoices" method="post">
-<!--<form asp-action="Create" method="post"> -->
-    <input type="hidden" name="PartyId" value="@ViewBag.PartyId" />
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in assignedProducts)
-            {
-                <tr>
-                    <td>@product.ProductName</td>
-                    <td>
-                        <input type="hidden" name="invoiceRequests[@index].ProductId" value="@product.ProductID" />
-                        <input type="number" name="invoiceRequests[@index].Quantity" class="form-control" min="1" value="1" />
-                    </td>
-                </tr>
-                index++;
-            }
-        </tbody>
-    </table>
-
-    <button type="submit" class="btn btn-primary">Create Invoice</button>
-</form>
-
-@if (invoiceResponse != null)
-{
-    <h3>Invoice Generated</h3>
-    <p><strong>Party Name:</strong> @invoiceResponse.PartyName</p>
-    <p><strong>Total Amount:</strong> $@invoiceResponse.Total</p>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var detail in invoiceResponse.InvoiceDetails)
-            {
-                <tr>
-                    <td>@detail.ProductName</td>
-                    <td>@detail.Quantity</td>
-                    <td>$@detail.Price</td>
-                    <td>$@(detail.Quantity * detail.Price)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}  *@
-
-@model InvoiceView
+﻿@model InvoiceView
 @{
     ViewBag.Title = "Invoice";
 }
@@ -192,16 +53,6 @@
             </div>
         }
 
-        <!-- Price -->
-        @* <div class="form-field flex">
-        <div class="w-25">
-        <label for="Price" class="form-label pt">Price</label>
-        </div>
-        <div class="flex-1">
-        <input type="number" class="form-input" id="price" placeholder="Price" readonly>
-        <span class="text-red"></span>
-        </div>
-        </div> *@
 
         <!-- Submit Button -->
         <div class="form-field flex">
@@ -212,13 +63,6 @@
             </div>
         </div>
 
-        @* <div class="form-field flex">
-        <div class="w-25"></div>
-        <div class="flex-1">
-        <button class="btn btn-secondary" id="generateInvoiceButton">Generate Invoice</button>
-        </div>
-
-        </div> *@
 
     </form>
 </div>
@@ -276,7 +120,6 @@
                     if (quantity > 0) {
                         var subtotal = quantity * price;
 
-                        // Append new row to the invoice table
                         $('#invoiceBody').append(
                             '<tr>' +
                             '<td>' + productId + '</td>' +
@@ -330,5 +173,4 @@
             });
         });
     </script>
-
 } 

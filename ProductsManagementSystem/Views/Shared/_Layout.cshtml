@@ -51,6 +51,25 @@
                             </li>
                         </ul>
                     </div> *@
+                    @{
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <p class="text-center my-auto"> Welcome! Admin </p>
+                            }
+                            else
+                            {
+                                <p class="text-center my-auto"> Welcome! User </p>
+                            }
+                            <a asp-controller="Account" asp-action="Logout"><button class="btn btn-outline-danger mx-2">Logout</button></a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Register"> <button class="btn btn-outline-success mx-2">Register</button></a>
+                            <a asp-controller="Account" asp-action="Login"> <button class="btn btn-outline-success mx-2">Login</button></a>
+                        }
+                    }
                 </div>
 
             </div>

@@ -5,10 +5,8 @@
 
 }
 
-<!-- Invoice Container -->
 <div class="invoice-container" style="max-width: 800px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; background-color: #fff; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);">
 
-    <!-- Header Section -->
     <div class="invoice-header d-flex justify-content-between align-items-center" style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
         <h1 style="font-size: 32px; font-weight: bold; color: #333;">INVOICE</h1>
         <div class="invoice-details">
@@ -17,13 +15,13 @@
         </div>
     </div>
 
-    <!-- Party Information -->
+
     <div class="party-details" style="margin-bottom: 30px;">
         <h3 style="margin-bottom: 5px;"><strong>Bill To:</strong></h3>
         <p><strong>Party Name:</strong> @Model.PartyName</p>
     </div>
 
-    <!-- Product Table -->
+
     <table class="table table-bordered" style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
         <thead>
             <tr style="background-color: #f2f2f2; text-align: left;">
@@ -46,7 +44,7 @@
         </tbody>
     </table>
 
-    <!-- Total Section -->
+
     @{
         var TotalPrice = Model.invoiceItems.Sum(p => p.Quantity * p.Price);
     }
@@ -54,7 +52,7 @@
         <h3 style="font-size: 24px; font-weight: bold;">Grand Total: @String.Format("{0:C}", TotalPrice)</h3>
     </div>
 
-    <!-- Footer Section -->
+
     <div class="invoice-footer" style="margin-top: 40px; text-align: center; border-top: 2px solid #000; padding-top: 10px; font-size: 14px; color: #777;">
         <p>Thank you for your business!</p>
         <p><em>This is a computer-generated invoice and does not require a signature.</em></p>

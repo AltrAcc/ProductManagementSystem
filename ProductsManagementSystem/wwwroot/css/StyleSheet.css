@@ -84,14 +84,14 @@
     border: 1px solid #7DDA58;
     border-radius: 5px;
     padding: 5px 10px;
-    color: black;
+    color: white;
     background-color: #aee897;
     transition: background-color 0.3s ease;
 }
 
     .styled-link-edit:hover {
         background-color: #53bc2a;
-        color: black;
+        color: white;
     }
 
 .styled-link-delete {

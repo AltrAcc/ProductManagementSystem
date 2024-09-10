@@ -10,9 +10,13 @@
 
 <a asp-action="InvoiceOfParty" asp-controller="Invoices" asp-route-partyId="@Model.PartyResponse.PartyID" class="styled-link">show Invoices</a>
 
-<a asp-action="ProductAssign" asp-controller="ProductAssignment" asp-route-partyId="@Model.PartyResponse.PartyID" class="styled-link">
-    Assign Product
-</a>
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="ProductAssign" asp-controller="ProductAssignment" asp-route-partyId="@Model.PartyResponse.PartyID" class="styled-link">
+        Assign Product
+    </a>
+}
+
 <br />
 <br />  
 
