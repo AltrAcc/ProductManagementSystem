@@ -139,10 +139,10 @@ namespace ProductManagementSystem.Controllers
             {
                 PageMargins = new Rotativa.AspNetCore.Options.Margins()
                 {
-                    Top = 20,
-                    Right = 20,
+                    Top = 15,
+                    Right = 10,
                     Bottom = 20,
-                    Left = 20,
+                    Left = 10,
                 },
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
 
