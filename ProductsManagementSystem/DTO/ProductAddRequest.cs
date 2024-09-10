@@ -13,7 +13,7 @@ namespace ProductsManagementSystem.DTO
         public Decimal? ProductPrice { get; set; }
 
         [Required(ErrorMessage = "Add Description of product")]
-        [Length(10, 50, ErrorMessage = "Description length id allowed between 10 to 50")]
+        [Length(5, 100, ErrorMessage = "Description length id allowed between 10 to 50")]
         public string? ProductDescription { get; set; }
 
         public Product ToProduct()

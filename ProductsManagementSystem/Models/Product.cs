@@ -28,7 +28,7 @@ namespace ProductManagementSystem.Models
         public string ProductName { get; set; }
 
         [Required(ErrorMessage = "Add Description of product")]
-        [Length(minimumLength: 10, maximumLength: 50, ErrorMessage = "Description Length allowed between 10 to 50")]
+        [Length(minimumLength: 5, maximumLength: 100, ErrorMessage = "Description Length allowed between 10 to 50")]
         public string ProductDescription { get; set; }
 
         public ICollection<ProductRate>? ProductRates { get; set; }

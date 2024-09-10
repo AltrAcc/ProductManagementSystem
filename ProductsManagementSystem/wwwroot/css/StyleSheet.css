@@ -85,12 +85,12 @@
     border-radius: 5px;
     padding: 5px 10px;
     color: black;
-    background-color: #bef7c2;
+    background-color: #aee897;
     transition: background-color 0.3s ease;
 }
 
     .styled-link-edit:hover {
-        background-color: #7DDA58;
+        background-color: #53bc2a;
         color: black;
     }
 
@@ -184,10 +184,9 @@
     border-bottom: 1px solid #ffffff;
 }
 
-.table tbody tr:hover
-{
-    background-color: ;
-}
+    .table tbody tr:hover {
+        background-color: #d6d6d6;
+    }
 
 .w-25
 {
