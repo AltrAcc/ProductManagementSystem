@@ -5,6 +5,7 @@ using ProductManagementSystem.Models;
 using ProductsManagementSystem.DTO;
 using ProductsManagementSystem.Models;
 using ProductsManagementSystem.ServiceContracts;
+using ProductsManagementSystem.Services;
 
 namespace ProductManagementSystem.Controllers
 {
@@ -21,31 +22,6 @@ namespace ProductManagementSystem.Controllers
             _partyService = partyService;
             _productAssignmentService = productAssignmentService;
         }
-
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        //// Show the form and assigned products for a party
-        //[HttpGet]
-        //public IActionResult Create(int partyId)
-        //{
-        //    var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(partyId);
-        //    ViewBag.AssignedProducts = assignedProducts;
-        //    ViewBag.PartyId = partyId;
-        //    return View();
-        //    //var assignedProducts = _productAssignmentService.GetAssignProductByPartyID(partyId).ToList();
-
-        //    //var viewModel = new InvoiceViewModel
-        //    //{
-        //    //    PartyId = partyId,
-        //    //    AssignedProducts = assignedProducts,
-        //    //    InvoiceResponse = null // Or set this if you have an existing invoice response
-        //    //};
-
-        //    //return View(viewModel);
-        //}
 
 
         [HttpGet]
@@ -88,6 +64,23 @@ namespace ProductManagementSystem.Controllers
             return View(invoiceView);
         }
 
+        [HttpGet]
+        public IActionResult Delete(int invoiceId)
+        {
+            InvoiceResponse reponse = _invoiceService.GetInvoiceByInvoiceId(invoiceId);
+            return View(reponse);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int invoiceId, InvoiceResponse invoiceResponse)
+        {
+            if (invoiceId <= 0)
+            {
+                return RedirectToAction(nameof(InvoicesController.Index), "Invoices");
+            }
+            _invoiceService.DeleteInvoice(invoiceId);
+            return RedirectToAction(nameof(InvoicesController.Index), "Invoices");
+        }
 
         [HttpPost]
         public IActionResult CreateInvoice([FromBody] List<InvoiceRequest> invoiceData)

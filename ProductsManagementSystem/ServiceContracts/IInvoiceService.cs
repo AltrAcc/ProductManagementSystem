@@ -11,5 +11,8 @@ namespace ProductsManagementSystem.ServiceContracts
         public IEnumerable<InvoiceResponse> GetInvoiceByPartyId(int partyId);
 
         public InvoiceViewModel GetInvoiceDetailsByInvoiceId(int invoiceId);
+
+        public bool DeleteInvoice(int invoiceId);
+        InvoiceResponse GetInvoiceByInvoiceId(int invoiceId);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ProductsManagementSystem.DTO
+﻿using ProductManagementSystem.Models;
+
+namespace ProductsManagementSystem.DTO
 {
     public class InvoiceResponse
     {
@@ -15,10 +17,17 @@
         public decimal Total { get; set; }
     }
 
-    //public class InvoiceDetail
-    //{
-    //    public string ProductName { get; set; }
-    //    public int Quantity { get; set; }
-    //    public decimal Price { get; set; }
-    //}
+    public static class InvoiceExtensions
+    {
+        public static InvoiceResponse ToInvoiceResponse(this Invoice invoice, InvoiceDetails invoiceDeatils)
+        {
+            return new InvoiceResponse()
+            {
+                InvoiceId = invoice.InvoiceId,
+                PartyId = invoice.PartyId,
+                InvoiceDate = invoice.InvoiceDate,
+                ProductCount = invoiceDeatils.Quantity
+            };
+        }
+    }
 }

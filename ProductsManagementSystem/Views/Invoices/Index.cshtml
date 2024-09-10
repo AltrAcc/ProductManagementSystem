@@ -26,6 +26,10 @@
                 <td>@invoice.Total</td>
                 <td>
                     <a asp-action="Details" asp-controller="Invoices" asp-route-InvoiceId="@invoice.InvoiceId" class="btn styled-link-create">Details</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-controller="Invoices" asp-route-InvoiceId="@invoice.InvoiceId" class="btn styled-link-delete">Delete</a>
+                    }
                 </td>
             </tr>
         }

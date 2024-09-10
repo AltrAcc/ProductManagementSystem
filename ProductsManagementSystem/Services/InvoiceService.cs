@@ -57,6 +57,25 @@ namespace ProductsManagementSystem.Services
             };
         }
 
+        public bool DeleteInvoice(int invoiceId)
+        {
+            var invoice = _db.Invoices.Find(invoiceId);
+            if (invoice == null)
+            {
+                throw new InvalidOperationException("Invoice Not Found");
+            }
+
+            // Remove Invoice as well from InvoiceDetail
+            var invoiceDetails = _db.InvoicesDetails.Where(inv => inv.InvoiceId == invoiceId).ToList();
+            _db.InvoicesDetails.RemoveRange(invoiceDetails);
+
+            _db.Invoices.Remove(invoice);
+
+            _db.SaveChanges();
+
+            return true;
+        }
+
         public IEnumerable<InvoiceResponse> GetAllInvoice()
         {
             var invoiceSummaries = _db.Invoices
@@ -71,6 +90,19 @@ namespace ProductsManagementSystem.Services
                 .ToList();
 
             return invoiceSummaries;
+        }
+
+        public InvoiceResponse GetInvoiceByInvoiceId(int invoiceId)
+        {
+            var invoice = _db.Invoices.Find(invoiceId);
+            if (invoice == null)
+            {
+                throw new InvalidOperationException("Invoice Not Found");
+            }
+
+            InvoiceDetails? invoiceDetails = _db.InvoicesDetails.Where(p => p.InvoiceId == invoiceId).FirstOrDefault();
+
+            return invoice.ToInvoiceResponse(invoiceDetails);
         }
 
         public IEnumerable<InvoiceResponse> GetInvoiceByPartyId(int partyId)
@@ -110,7 +142,7 @@ namespace ProductsManagementSystem.Services
                 invoiceItems = invoice.InvoiceDetails.Select(item => new InvoiceItems
                 {
                     ProductId = item.ProductId,
-                    ProductName = _db.Products.Where(product => product.ProductID == item.ProductId).FirstOrDefault().ProductName,
+                    ProductName = _db.Products.Where(invoice => invoice.ProductID == item.ProductId).FirstOrDefault().ProductName,
                     Quantity = item.Quantity,
                     Price = item.Price,
                 })
